@@ -6,7 +6,7 @@
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">
                         <input class="custom-control-input" name="selectSiteCheckbox" type="checkbox" id="gridCheck"
-                            [(ngModel)]="siteOption">
+                            [(ngModel)]="siteOption" (click)="enableOnlySiteOption()">
                         <label class="custom-control-label" for="gridCheck">
                             Show result from specific site
                         </label>
@@ -15,18 +15,18 @@
             </div>
 
             <div class="col col-sm-6">
-                
+
                 <div class="">
                     <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input" name="selectImageCheckbox" type="checkbox" id="imageOptionCheckbox"
-                            [(ngModel)]="imageOption">
+                        <input class="custom-control-input" name="selectImageCheckbox" type="checkbox"
+                            id="imageOptionCheckbox" [(ngModel)]="imageOption" (click)="enableOnlyImageOption()">
                         <label class="custom-control-label" for="imageOptionCheckbox">
                             Search Images
                         </label>
                     </div>
                 </div>
             </div>
-            
+
 
 
 
@@ -36,21 +36,53 @@
 
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon2">Select Image Type</span>
-                  </div>
+                    <span class="input-group-text" id="basic-addon2">Image type</span>
+                </div>
                 <select class="form-control" (change)="onSelect($event)" id="imageTypeDropdown">
                     <option selected disabled value="">Image Type</option>
-                    <option *ngFor="let website of availableWebsites">
+                    <option value="" >Any</option>
+                    <option *ngFor="let imgType of availableImageTypes">
 
-                        {{website.name}}
+                        {{imgType.type}}
 
                     </option>
 
                 </select>
-                
-              </div>
 
-            
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon2">Image type</span>
+                </div>
+                <select class="form-control" name="imageSizeDropdown" [(ngModel)]="selectedImageSize" id="imageTypeDropdown">
+                    <option selected disabled value="">Image size</option>
+                    <option value="" >Any</option>
+                    <option value="l" >Large</option>
+                    <option value="m" >Medium</option>
+                    <option value="i" >Icon</option>
+
+                </select>
+                
+
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon2">Time</span>
+                </div>
+                <select class="form-control" name="imageTimeDropdown" [(ngModel)]="selectedTimeDuration" id="imageTimeDropdown">
+                    <option selected disabled value="">Updated within</option>
+                    <option value="" >Any</option>
+                    <option value="d" >Path 24 hours</option>
+                    <option value="w" >Past week</option>
+                    <option value="m" >Past month</option>
+                    <option value="y" >Past year</option>
+                    
+                </select>
+                
+
+            </div>
+
+
         </div>
 
         <div *ngIf="siteOption">

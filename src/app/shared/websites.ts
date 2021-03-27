@@ -20,9 +20,22 @@ export const WEBSITES: Website[] =[
         image: ''
     },
     {
+        id: '5',
+        name: 'Github Gist',
+        url: 'gist.github.com',
+        image: ''
+    },
+    {
+        id: '6',
+        name: 'Github',
+        url: 'github.com',
+        image: ''
+    },
+    {
         id: '4',
         name: 'Other',
         url: '',
         image: ''
     }
+
 ];

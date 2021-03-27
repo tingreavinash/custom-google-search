@@ -14,7 +14,6 @@ export class WebsitesService {
   }
 
   getWebsite(name: String): Website {
-    let test =WEBSITES.filter((site)=> (site.name === name))[0];
     return WEBSITES.filter((site)=> (site.name === name))[0];
   }
 }

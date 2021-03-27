@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ImagetypesService } from '../services/imagetypes.service';
 import { WebsitesService } from '../services/websites.service';
+import { ImageType } from '../shared/imageType';
 import { Website } from '../shared/website';
 
 @Component({
@@ -11,27 +13,42 @@ export class ToolsComponent implements OnInit {
 
   siteOption: boolean;
   imageOption: boolean;
+  
   availableWebsites: Website[];
+  availableImageTypes: ImageType[];
+
   selectedWebsiteOption: String;
+  
   selectedWebsite: Website;
+  selectedImageType: ImageType;
+
+  selectedImageSize: string;
+  selectedTimeDuration: string;
+
   isDisabled: boolean = true;
   searchQuery: string;
-  googleSearchURL: string = 'http://www.google.com/search?q=';
+  googleSearchURL: string = 'http://www.google.com/search';
   fullSearchURL: string;
   filterCondition: string = '';
   matchFullPhrase: boolean = false;
 
-  constructor(private websiteService: WebsitesService) {
+
+
+  constructor(private websiteService: WebsitesService,
+    private imageService: ImagetypesService) {
     this.availableWebsites = websiteService.getWebsites();
     this.selectedWebsite = new Website();
+    this.selectedImageType = new ImageType();
 
+    this.availableImageTypes = imageService.getImageTypes();
+    
   }
 
   ngOnInit(): void {
+   
   }
 
   isOtherOptionSelected() {
-    console.log("Option selected: " + this.selectedWebsite.name);
 
     if (this.selectedWebsite.name === 'Other') {
       
@@ -42,9 +59,7 @@ export class ToolsComponent implements OnInit {
   }
 
   addCondition(condition: string) {
-    console.log("adding condition: " + condition);
     this.filterCondition += condition;
-    this.filterCondition += ' ';
 
   }
 
@@ -57,29 +72,52 @@ export class ToolsComponent implements OnInit {
 
   createSearchQuery() {
     this.fullSearchURL = this.googleSearchURL;
-    let formattedString: string = this.searchQuery;
-    if (this.siteOption && this.selectedWebsite.url != null && this.selectedWebsite.url != "") {
-      this.addCondition("site:" + this.selectedWebsite.url);
-
-    }
-    this.fullSearchURL += this.filterCondition;
-
+    let formattedString: string =  this.searchQuery;
     if (this.matchFullPhrase) {
       formattedString = this.createFullPhrase(this.searchQuery);
-      console.log('formatted string: '+formattedString);
     }
+    if (this.siteOption ) {
+      this.addCondition("?q=site:" + this.selectedWebsite.url);
+      this.fullSearchURL += this.filterCondition;
+      this.fullSearchURL += ' '+ formattedString;
 
-    this.fullSearchURL += formattedString;
+    }else if (this.imageOption) {
+      this.addCondition("?hl=en&tbm=isch&tbs=ift:" + this.selectedImageType.type);
+      this.addCondition(",isz:"+this.selectedImageSize);
+      this.addCondition(",qdr:"+this.selectedTimeDuration);
+      this.fullSearchURL += this.filterCondition;
+      this.fullSearchURL += '&q='+ formattedString;
+    }else {
+      this.fullSearchURL += '?q='+ formattedString;
+
+    }
 
   }
 
+  specificWebsiteService(selectedValue: string){
+    let selectedOption = selectedValue;
+    this.selectedWebsite = this.websiteService.getWebsite(selectedOption);
+    this.isOtherOptionSelected();
+  }
+
+  searchImagesService(selectedValue: string){
+    let selectedOption = selectedValue;
+    this.selectedImageType = this.imageService.getImageType(selectedOption);
+  }
+  enableOnlySiteOption(){
+    this.imageOption = false;  
+  }
+  enableOnlyImageOption(){
+    this.siteOption = false;
+  }
   onSelect(event: Event) {
     let selectedOption = (event.target as HTMLSelectElement).value;
-    this.selectedWebsite = this.websiteService.getWebsite(selectedOption);
-    console.log("Selected option string : " + selectedOption);
-    console.log("Result website: " + this.selectedWebsite.url);
-    this.selectedWebsiteOption = this.selectedWebsite.url;
-    this.isOtherOptionSelected();
+    if (this.siteOption){
+      this.specificWebsiteService(selectedOption);
+    }else if (this.imageOption){
+      this.searchImagesService(selectedOption);
+    }
+    
 
 
   }
@@ -87,7 +125,6 @@ export class ToolsComponent implements OnInit {
   executeSearchQuery() {
     if (this.searchQuery != "" && this.searchQuery != null) {
       this.createSearchQuery();
-      console.log("Full search url: " + this.fullSearchURL);
 
       window.open(this.fullSearchURL, "_blank");
       this.fullSearchURL = '';
