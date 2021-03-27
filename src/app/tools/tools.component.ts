@@ -134,12 +134,14 @@ export class ToolsComponent implements OnInit {
         this.selectedFiletypes.push(this.userGivenFiletype);
       }
 
-      if (this.selectedFiletypes.length > 0 ){
+      if (this.selectedFiletypes.length >1 ){
         this.selectedFiletypes.forEach(element => {
           this.appendString(" filetype:"+element);
           this.appendString(" OR ");
           
         });
+      }else if (this.selectedFiletypes.length === 1){
+        this.appendString(" filetype:"+this.selectedFiletypes[0]);
       }
 
       this.appendString("&tbs=qdr:"+this.selectedTimeDuration);
