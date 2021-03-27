@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FiletypesService } from '../services/filetypes.service';
 import { ImagetypesService } from '../services/imagetypes.service';
 import { WebsitesService } from '../services/websites.service';
+import { FileType } from '../shared/filetype';
 import { ImageType } from '../shared/imageType';
 import { Website } from '../shared/website';
 
@@ -18,12 +20,14 @@ export class ToolsComponent implements OnInit {
   
   availableWebsites: Website[];
   availableImageTypes: ImageType[];
+  availableFiletypes: FileType[];
 
   selectedWebsiteOption: String;
   
   selectedWebsite: Website;
   selectedImageType: ImageType;
-  selectedFiletype: string;
+  selectedFiletypes: string[] = [];
+  userGivenFiletype: string;
 
   selectedImageSize: string;
   selectedTimeDuration: string;
@@ -38,10 +42,12 @@ export class ToolsComponent implements OnInit {
 
 
   constructor(private websiteService: WebsitesService,
-    private imageService: ImagetypesService) {
+    private imageService: ImagetypesService,
+    private fileService: FiletypesService) {
     this.availableWebsites = websiteService.getWebsites();
     this.selectedWebsite = new Website();
     this.selectedImageType = new ImageType();
+    this.availableFiletypes = fileService.getFileTypes();
 
     this.availableImageTypes = imageService.getImageTypes();
     
@@ -49,6 +55,10 @@ export class ToolsComponent implements OnInit {
 
   ngOnInit(): void {
    
+  }
+
+  clearFileTypeSelection(){
+    this.selectedFiletypes = [];
   }
 
   isOtherOptionSelected() {
@@ -82,21 +92,58 @@ export class ToolsComponent implements OnInit {
     if (this.siteOption ) {
       this.appendString("?q=site:" + this.selectedWebsite.url);
       this.appendString(' '+ formattedSearchString);
+      if(this.filesOption){
+        if(this.userGivenFiletype !=null && this.userGivenFiletype !=""){
+          this.selectedFiletypes = [];
+          this.selectedFiletypes.push(this.userGivenFiletype);
+        }
+  
+        if (this.selectedFiletypes.length > 0 ){
+          this.selectedFiletypes.forEach(element => {
+            this.appendString(" filetype:"+element);
+            this.appendString(" OR ");
+            
+          });
+        }  
+      }
+
       this.appendString("&tbs=qdr:"+this.selectedTimeDuration);
       this.fullSearchURL += this.filterCondition;
 
-    }else if (this.imageOption) {
-      this.appendString("?hl=en&tbm=isch&tbs=ift:" + this.selectedImageType.type);
-      this.appendString(",isz:"+this.selectedImageSize);
-      this.appendString(",qdr:"+this.selectedTimeDuration);
+    }else if (this.imageOption ) {
+      
+      this.appendString("?hl=en&tbm=isch&tbs=");
+      if(this.selectedImageType != null){
+        this.appendString("ift:" + this.selectedImageType.type+',');
+      }
+      this.appendString("isz:"+this.selectedImageSize+',');
+      this.appendString("qdr:"+this.selectedTimeDuration);
       this.fullSearchURL += this.filterCondition;
       this.fullSearchURL += '&q='+ formattedSearchString;
     }else if(this.newsOption){
-      this.appendString("?q=filetye:" + this.selectedFiletype);
-      this.appendString(' '+ formattedSearchString);
+      this.appendString("?q=" + formattedSearchString);
       this.appendString("&tbs=qdr:"+this.selectedTimeDuration);
+      this.appendString("&tbm=nws");
       this.fullSearchURL += this.filterCondition;
     }else if (this.filesOption){
+
+      this.appendString("?q=" + formattedSearchString);
+
+      if(this.userGivenFiletype !=null && this.userGivenFiletype !=""){
+        this.selectedFiletypes = [];
+        this.selectedFiletypes.push(this.userGivenFiletype);
+      }
+
+      if (this.selectedFiletypes.length > 0 ){
+        this.selectedFiletypes.forEach(element => {
+          this.appendString(" filetype:"+element);
+          this.appendString(" OR ");
+          
+        });
+      }
+
+      this.appendString("&tbs=qdr:"+this.selectedTimeDuration);
+      this.fullSearchURL += this.filterCondition;
 
     }else {
       this.fullSearchURL += '?q='+ formattedSearchString;
@@ -122,7 +169,6 @@ export class ToolsComponent implements OnInit {
   enableOnlySiteOption(){
     this.imageOption = false; 
     this.newsOption = false;
-    this.filesOption = false;
   }
   enableOnlyImageOption(){
     this.siteOption = false;
@@ -134,8 +180,7 @@ export class ToolsComponent implements OnInit {
     this.siteOption = false;
     this.filesOption = false;
   }
-  enableOnlyFilesOption(){
-    this.siteOption = false;
+  enableFilesOption(){
     this.imageOption = false;
     this.newsOption = false;
   }

@@ -2,18 +2,27 @@ import { ImageType } from "./imageType";
 
 export const IMAGETYPES: ImageType[] =[
     {
-        id: '1',
-        type: 'png',
-        viewName: 'PNG'
+        type: 'jpg'
     },
     {
-        id: '2',
-        type: 'svg',
-        viewName: 'SVG'
+        type: 'gif'
     },
     {
-        id: '1',
-        type: 'gif',
-        viewName: 'GIF'
+        type: 'png'
+    },
+    {
+        type: 'bmp'
+    },
+    {
+        type: 'svg'
+    },
+    {
+        type: 'webp'
+    },
+    {
+        type: 'ico'
+    },
+    {
+        type: 'raw'
     }
 ];
