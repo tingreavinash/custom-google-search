@@ -13,6 +13,8 @@ export class ToolsComponent implements OnInit {
 
   siteOption: boolean;
   imageOption: boolean;
+  newsOption: boolean;
+  filesOption: boolean;
   
   availableWebsites: Website[];
   availableImageTypes: ImageType[];
@@ -21,6 +23,7 @@ export class ToolsComponent implements OnInit {
   
   selectedWebsite: Website;
   selectedImageType: ImageType;
+  selectedFiletype: string;
 
   selectedImageSize: string;
   selectedTimeDuration: string;
@@ -58,7 +61,7 @@ export class ToolsComponent implements OnInit {
     }
   }
 
-  addCondition(condition: string) {
+  appendString(condition: string) {
     this.filterCondition += condition;
 
   }
@@ -72,23 +75,35 @@ export class ToolsComponent implements OnInit {
 
   createSearchQuery() {
     this.fullSearchURL = this.googleSearchURL;
-    let formattedString: string =  this.searchQuery;
+    let formattedSearchString: string =  this.searchQuery;
     if (this.matchFullPhrase) {
-      formattedString = this.createFullPhrase(this.searchQuery);
+      formattedSearchString = this.createFullPhrase(this.searchQuery);
     }
     if (this.siteOption ) {
-      this.addCondition("?q=site:" + this.selectedWebsite.url);
+      this.appendString("?q=site:" + this.selectedWebsite.url);
+      this.appendString(' '+ formattedSearchString);
+      this.appendString("&tbs=qdr:"+this.selectedTimeDuration);
       this.fullSearchURL += this.filterCondition;
-      this.fullSearchURL += ' '+ formattedString;
 
     }else if (this.imageOption) {
-      this.addCondition("?hl=en&tbm=isch&tbs=ift:" + this.selectedImageType.type);
-      this.addCondition(",isz:"+this.selectedImageSize);
-      this.addCondition(",qdr:"+this.selectedTimeDuration);
+      this.appendString("?hl=en&tbm=isch&tbs=ift:" + this.selectedImageType.type);
+      this.appendString(",isz:"+this.selectedImageSize);
+      this.appendString(",qdr:"+this.selectedTimeDuration);
       this.fullSearchURL += this.filterCondition;
-      this.fullSearchURL += '&q='+ formattedString;
+      this.fullSearchURL += '&q='+ formattedSearchString;
+    }else if(this.newsOption){
+      this.appendString("?q=filetye:" + this.selectedFiletype);
+      this.appendString(' '+ formattedSearchString);
+      this.appendString("&tbs=qdr:"+this.selectedTimeDuration);
+      this.fullSearchURL += this.filterCondition;
+    }else if (this.filesOption){
+
     }else {
-      this.fullSearchURL += '?q='+ formattedString;
+      this.fullSearchURL += '?q='+ formattedSearchString;
+
+      this.appendString("&tbs=qdr:"+this.selectedTimeDuration);
+      this.fullSearchURL += this.filterCondition;
+
 
     }
 
@@ -105,11 +120,26 @@ export class ToolsComponent implements OnInit {
     this.selectedImageType = this.imageService.getImageType(selectedOption);
   }
   enableOnlySiteOption(){
-    this.imageOption = false;  
+    this.imageOption = false; 
+    this.newsOption = false;
+    this.filesOption = false;
   }
   enableOnlyImageOption(){
     this.siteOption = false;
+    this.newsOption = false;
+    this.filesOption = false;
   }
+  enableOnlyNewsOption(){
+    this.imageOption = false;
+    this.siteOption = false;
+    this.filesOption = false;
+  }
+  enableOnlyFilesOption(){
+    this.siteOption = false;
+    this.imageOption = false;
+    this.newsOption = false;
+  }
+
   onSelect(event: Event) {
     let selectedOption = (event.target as HTMLSelectElement).value;
     if (this.siteOption){
@@ -125,6 +155,7 @@ export class ToolsComponent implements OnInit {
   executeSearchQuery() {
     if (this.searchQuery != "" && this.searchQuery != null) {
       this.createSearchQuery();
+      console.log("Search URL: "+this.fullSearchURL);
 
       window.open(this.fullSearchURL, "_blank");
       this.fullSearchURL = '';

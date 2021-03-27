@@ -1,27 +1,53 @@
 <div class="container">
     <form class="mt-2">
-        <h3>Choose options</h3>
+        <h3>Search Options</h3>
         <div class="form-row align-items-center">
-            <div class="col col-sm-6">
+            <div class="col col-sm-3">
                 <div class="form-group">
                     <div class="custom-control custom-checkbox">
                         <input class="custom-control-input" name="selectSiteCheckbox" type="checkbox" id="gridCheck"
                             [(ngModel)]="siteOption" (click)="enableOnlySiteOption()">
                         <label class="custom-control-label" for="gridCheck">
-                            Show result from specific site
+                            Specific website
                         </label>
                     </div>
                 </div>
             </div>
 
-            <div class="col col-sm-6">
+            <div class="col col-sm-3">
 
                 <div class="">
                     <div class="custom-control custom-checkbox">
                         <input class="custom-control-input" name="selectImageCheckbox" type="checkbox"
                             id="imageOptionCheckbox" [(ngModel)]="imageOption" (click)="enableOnlyImageOption()">
                         <label class="custom-control-label" for="imageOptionCheckbox">
-                            Search Images
+                            Images
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-sm-3">
+
+                <div class="">
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" name="selectNewsCheckbox" type="checkbox"
+                            id="selectNewsCheckbox" [(ngModel)]="newsOption" (click)="enableOnlyNewsOption()">
+                        <label class="custom-control-label" for="selectNewsCheckbox">
+                            News
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col col-sm-3">
+
+                <div class="">
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" name="selectFilesCheckbox" type="checkbox"
+                            id="selectFilesCheckbox" [(ngModel)]="filesOption" (click)="enableOnlyFilesOption()">
+                        <label class="custom-control-label" for="selectFilesCheckbox">
+                            Files
                         </label>
                     </div>
                 </div>
@@ -52,7 +78,7 @@
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon2">Image type</span>
+                    <span class="input-group-text" id="basic-addon3">Image size</span>
                 </div>
                 <select class="form-control" name="imageSizeDropdown" [(ngModel)]="selectedImageSize" id="imageTypeDropdown">
                     <option selected disabled value="">Image size</option>
@@ -65,23 +91,26 @@
                 
 
             </div>
+            
+
+
+        </div>
+
+        <div *ngIf="filesOption">
+
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon2">Time</span>
+                    <span class="input-group-text" id="basic-addon2">File type</span>
                 </div>
-                <select class="form-control" name="imageTimeDropdown" [(ngModel)]="selectedTimeDuration" id="imageTimeDropdown">
-                    <option selected disabled value="">Updated within</option>
+                <select class="form-control" name="fileTypeDropdown" [(ngModel)]="selectedFiletype" id="fileTypeDropdown">
+                    <option selected disabled value="">File Type</option>
                     <option value="" >Any</option>
-                    <option value="d" >Path 24 hours</option>
-                    <option value="w" >Past week</option>
-                    <option value="m" >Past month</option>
-                    <option value="y" >Past year</option>
-                    
+                    <option value="pdf">PDF</option>
+                    <option value="pptx">PPTX</option>
+
                 </select>
-                
 
             </div>
-
 
         </div>
 
@@ -107,6 +136,23 @@
             </div>
         </div>
 
+
+        <div class="input-group mb-3">
+
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon2">Time</span>
+            </div>
+            <select aria-describedby="selectTimeDescription" class="form-control" name="imageTimeDropdown" [(ngModel)]="selectedTimeDuration" id="imageTimeDropdown">
+                <option selected disabled value="">Updated within</option>
+                <option value="" >Any</option>
+                <option value="h" >Past hour</option>
+                <option value="d" >Past 24 hours</option>
+                <option value="w" >Past week</option>
+                <option value="m" >Past month</option>
+                <option value="y" >Past year</option>
+                
+            </select>
+        </div>
 
 
         <div class="form-group">
