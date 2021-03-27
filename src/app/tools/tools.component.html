@@ -4,10 +4,10 @@
         <div class="form-row align-items-center">
             <div class="col col-sm-6">
                 <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" name="selectSiteCheckbox" type="checkbox" id="gridCheck"
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" name="selectSiteCheckbox" type="checkbox" id="gridCheck"
                             [(ngModel)]="siteOption">
-                        <label class="form-check-label" for="gridCheck">
+                        <label class="custom-control-label" for="gridCheck">
                             Show result from specific site
                         </label>
                     </div>
@@ -15,11 +15,12 @@
             </div>
 
             <div class="col col-sm-6">
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" name="selectImageCheckbox" type="checkbox" id="imageOptionCheckbox"
+                
+                <div class="">
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" name="selectImageCheckbox" type="checkbox" id="imageOptionCheckbox"
                             [(ngModel)]="imageOption">
-                        <label class="form-check-label" for="imageOptionCheckbox">
+                        <label class="custom-control-label" for="imageOptionCheckbox">
                             Search Images
                         </label>
                     </div>
@@ -81,10 +82,10 @@
             <input type="text" [(ngModel)]="searchQuery" class="form-control" id="searchInput"
                 aria-describedby="searchInput" name="searchInput"
                 placeholder="Enter the text that you want to search on google." required>
-            <div class="form-check">
-                <input class="form-check-input" name="matchFullCheckbox" type="checkbox" id="matchFullCheckbox"
+            <div class="custom-control custom-checkbox">
+                <input class="custom-control-input" name="matchFullCheckbox" type="checkbox" id="matchFullCheckbox"
                     [(ngModel)]="matchFullPhrase">
-                <label class="form-check-label" for="matchFullCheckbox">
+                <label class="custom-control-label" for="matchFullCheckbox">
                     Match full phrase
                 </label>
             </div>
