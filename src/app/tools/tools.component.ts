@@ -292,7 +292,6 @@ export class ToolsComponent implements OnInit {
       });
       this.searchAutocompleteResult[index] = result;
       index++;
-      console.log("result: ", this.searchAutocompleteResult[index]);
     });
 
   }
