@@ -179,7 +179,7 @@
         <div class="form-group text-center">
             <label for="searchInput">What do you want to search?</label>
             <input type="text" [(ngModel)]="searchQuery" (keyup)="fetchResults($event)" class="form-control" id="searchInput"
-                aria-describedby="searchInput" name="searchInput"
+                aria-describedby="searchInput" name="searchInput" 
                 placeholder="Enter the text that you want to search on google." required>
             <div class="custom-control custom-checkbox">
                 <input class="custom-control-input" name="matchFullCheckbox" type="checkbox" id="matchFullCheckbox"
@@ -193,6 +193,9 @@
         </div>
 
         <hr>
-    </form>
+    </form> 
+    <p id="searchResult" ></p>
+    
 
 </div>
+

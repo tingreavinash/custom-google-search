@@ -14,10 +14,12 @@ import { Website } from '../shared/website';
 })
 export class ToolsComponent implements OnInit {
 
+  testvalue: any;
   siteOption: boolean;
   imageOption: boolean;
   newsOption: boolean;
   filesOption: boolean;
+
   
   availableWebsites: Website[];
   availableImageTypes: ImageType[];
@@ -40,6 +42,7 @@ export class ToolsComponent implements OnInit {
   filterCondition: string = '';
   matchFullPhrase: boolean = false;
 
+  loadAPI: Promise<any>;
 
 
   constructor(private websiteService: WebsitesService,
@@ -215,11 +218,41 @@ export class ToolsComponent implements OnInit {
     }
   }
 
+
   fetchResults(event: Event){
     let value = (event.target as HTMLSelectElement).value;
-    
-    this.googleService.getResults(value);
+    //let _url = `https://en.wikipedia.org/w/api.php?action=opensearch&limit=10&format=json&callback=myCustomFunction&search=${value}`;
+    let _url = `http://suggestqueries.google.com/complete/search?client=firefox&callback=myCustomFunction&q=${value}`;
+
+    this.loadAPI = new Promise((resolve) => {
+      console.log('resolving promise...');
+      this.loadScript(_url);
+    });
+
+
+    console.log("Value: ",value);
+    //this.googleService.getResults(value);
   }
+
+  public loadScript(url: string) {
+    console.log('preparing to load...')
+    let node = document.createElement('script');
+    node.src = url;
+    node.type = 'text/javascript';
+    node.async = true;
+    node.charset = 'utf-8';
+    document.getElementsByTagName('app-root')[0].appendChild(node);
+    
+  }
+
+  setSearchResult(event: Event){
+    console.log("inside: setSearchResult");
+    let value = (event.target as HTMLSelectElement).value;
+    console.log("Result from component", value);
+  }
+
+
+
 
 
 }
