@@ -222,7 +222,7 @@ export class ToolsComponent implements OnInit {
 
   fetchResults(event: Event){
     let value = (event.target as HTMLSelectElement).value;
-    let _url = `http://suggestqueries.google.com/complete/search?client=firefox&callback=myCustomFunction&q=${value}`;
+    let _url = `https://suggestqueries.google.com/complete/search?client=firefox&callback=myCustomFunction&q=${value}`;
     //let _url = `https://en.wikipedia.org/w/api.php?action=opensearch&limit=10&format=json&callback=myCustomFunction&search=${value}`;
 
     if (value != null && value !=''){
