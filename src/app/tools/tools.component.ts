@@ -261,7 +261,7 @@ export class ToolsComponent implements OnInit {
     let scriptOutputString = this.searchResultTag.nativeElement.value;
     this.searchAutocompleteResult = scriptOutputString.split(",");
     
-    this.beautifySearchResults(this.searchQuery, this.searchAutocompleteResult);
+    //this.beautifySearchResults(this.searchQuery, this.searchAutocompleteResult);
   }
   setCharAt(str: string,index: number,chr: string) {
     if(index > str.length-1) return str;
