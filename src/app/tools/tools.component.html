@@ -178,7 +178,7 @@
 
         <div class="form-group text-center">
             <label for="searchInput">What do you want to search?</label>
-            <input type="text" [(ngModel)]="searchQuery" class="form-control" id="searchInput"
+            <input type="text" [(ngModel)]="searchQuery" (keyup)="fetchResults($event)" class="form-control" id="searchInput"
                 aria-describedby="searchInput" name="searchInput"
                 placeholder="Enter the text that you want to search on google." required>
             <div class="custom-control custom-checkbox">

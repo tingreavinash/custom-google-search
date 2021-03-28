@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FiletypesService } from '../services/filetypes.service';
+import { GooglesearchService } from '../services/googlesearch.service';
 import { ImagetypesService } from '../services/imagetypes.service';
 import { WebsitesService } from '../services/websites.service';
 import { FileType } from '../shared/filetype';
@@ -43,7 +44,8 @@ export class ToolsComponent implements OnInit {
 
   constructor(private websiteService: WebsitesService,
     private imageService: ImagetypesService,
-    private fileService: FiletypesService) {
+    private fileService: FiletypesService,
+    private googleService: GooglesearchService) {
     this.availableWebsites = websiteService.getWebsites();
     this.selectedWebsite = new Website();
     this.selectedImageType = new ImageType();
@@ -211,6 +213,12 @@ export class ToolsComponent implements OnInit {
     } else {
       alert("Enter something");
     }
+  }
+
+  fetchResults(event: Event){
+    let value = (event.target as HTMLSelectElement).value;
+    
+    this.googleService.getResults(value);
   }
 
 
