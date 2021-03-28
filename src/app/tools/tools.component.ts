@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FiletypesService } from '../services/filetypes.service';
 import { GooglesearchService } from '../services/googlesearch.service';
 import { ImagetypesService } from '../services/imagetypes.service';
@@ -14,7 +14,9 @@ import { Website } from '../shared/website';
 })
 export class ToolsComponent implements OnInit {
 
-  testvalue: any;
+  @ViewChild('searchResultTag', {static: true}) searchResultTag: ElementRef;
+  searchAutocompleteResult: string[];
+
   siteOption: boolean;
   imageOption: boolean;
   newsOption: boolean;
@@ -207,7 +209,6 @@ export class ToolsComponent implements OnInit {
   executeSearchQuery() {
     if (this.searchQuery != "" && this.searchQuery != null) {
       this.createSearchQuery();
-      console.log("Search URL: "+this.fullSearchURL);
 
       window.open(this.fullSearchURL, "_blank");
       this.fullSearchURL = '';
@@ -221,38 +222,45 @@ export class ToolsComponent implements OnInit {
 
   fetchResults(event: Event){
     let value = (event.target as HTMLSelectElement).value;
-    //let _url = `https://en.wikipedia.org/w/api.php?action=opensearch&limit=10&format=json&callback=myCustomFunction&search=${value}`;
     let _url = `http://suggestqueries.google.com/complete/search?client=firefox&callback=myCustomFunction&q=${value}`;
+    //let _url = `https://en.wikipedia.org/w/api.php?action=opensearch&limit=10&format=json&callback=myCustomFunction&search=${value}`;
+
+    if (value != null && value !=''){
 
     this.loadAPI = new Promise((resolve) => {
-      console.log('resolving promise...');
       this.loadScript(_url);
     });
 
 
-    console.log("Value: ",value);
-    //this.googleService.getResults(value);
+    }else{
+      this.searchResultTag.nativeElement.value ='';
+      this.searchAutocompleteResult =[];
+    } 
+
   }
 
   public loadScript(url: string) {
-    console.log('preparing to load...')
     let node = document.createElement('script');
     node.src = url;
     node.type = 'text/javascript';
     node.async = true;
     node.charset = 'utf-8';
-    document.getElementsByTagName('app-root')[0].appendChild(node);
-    
+    document.getElementsByTagName('app-tools')[0].appendChild(node);
   }
 
-  setSearchResult(event: Event){
-    console.log("inside: setSearchResult");
-    let value = (event.target as HTMLSelectElement).value;
-    console.log("Result from component", value);
+  setSearchInput(value: string){
+    this.searchQuery = value;
+    this.searchAutocompleteResult = [];
+  }
+  
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
   }
 
-
-
+  buttonClicked(){
+    let scriptOutputString = this.searchResultTag.nativeElement.value;
+    this.searchAutocompleteResult = scriptOutputString.split(",");
+  }
 
 
 }

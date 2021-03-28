@@ -13,7 +13,8 @@
   <app-root></app-root>
   <script>
     function myCustomFunction(data){
-      document.getElementById('searchResult').innerHTML = data;
+      document.getElementById('searchResult').value = data[1];
+      document.getElementById('btnPopulateResults').click();
     }
   </script>
   

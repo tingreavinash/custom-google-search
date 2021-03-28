@@ -1,6 +1,6 @@
 <div class="container">
-    <form class="mt-2">
-        <h3><span class="badge badge-warning">Filter Results</span></h3>
+    <form class="mt-2" autocomplete="off">
+        <h3 >Filter</h3>
         
         <div class="form-row align-items-center">
             <div class="col col-sm-3 text-center ">
@@ -178,23 +178,40 @@
 
         <div class="form-group text-center">
             <label for="searchInput">What do you want to search?</label>
-            <input type="text" [(ngModel)]="searchQuery" (keyup)="fetchResults($event)" class="form-control" id="searchInput"
-                aria-describedby="searchInput" name="searchInput" 
+            <input type="text" [(ngModel)]="searchQuery" (keyup)="fetchResults($event)" class="form-control text-center" id="searchInput"
+                aria-describedby="searchInput" name="searchInput"
                 placeholder="Enter the text that you want to search on google." required>
+
+                <ul class="list-group">
+                        
+                    <li class="list-group-item" (click)="setSearchInput(result)" *ngFor="let result of searchAutocompleteResult">
+                        {{result}}
+                    </li>
+                    
+                </ul>
             <div class="custom-control custom-checkbox">
+                
                 <input class="custom-control-input" name="matchFullCheckbox" type="checkbox" id="matchFullCheckbox"
                     [(ngModel)]="matchFullPhrase">
+                    
                 <label class="custom-control-label" for="matchFullCheckbox">
                     Match full phrase
                 </label>
             </div>
-            <button type="submit" (click)="executeSearchQuery()" class="btn btn-sm btn-success mt-3">Submit</button>
+            
+            
+            <button type="submit" (click)="executeSearchQuery()" class="btn btn-sm btn-outline-success mt-3">
+                Search on Google
+            </button>
 
         </div>
 
         <hr>
+        <input hidden class="form-control" name="matchFullCheckbox1" type="text" id="searchResult"
+                 #searchResultTag>
+        <button hidden type="button" id="btnPopulateResults" class="btn btn-sm btn-info" (click)="buttonClicked()">click me</button>
     </form> 
-    <p id="searchResult" ></p>
+    
     
 
 </div>
