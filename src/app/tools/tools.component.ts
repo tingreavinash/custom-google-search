@@ -35,7 +35,7 @@ export class ToolsComponent implements OnInit {
   userGivenFiletype: string;
 
   selectedImageSize: string;
-  selectedTimeDuration: string;
+  selectedTimeDuration: string ="";
 
   isDisabled: boolean = true;
   searchQuery: string;
@@ -260,6 +260,41 @@ export class ToolsComponent implements OnInit {
   buttonClicked(){
     let scriptOutputString = this.searchResultTag.nativeElement.value;
     this.searchAutocompleteResult = scriptOutputString.split(",");
+    
+    this.beautifySearchResults(this.searchQuery, this.searchAutocompleteResult);
+  }
+  setCharAt(str: string,index: number,chr: string) {
+    if(index > str.length-1) return str;
+    return str.substring(0,index) + chr + str.substring(index+1);
+  }
+
+  boldQuery(str, query): string {
+    //str = '<b>'+str+'</b>';
+    
+    const n = str.toUpperCase();
+    const q = query.toUpperCase();
+    const x = n.indexOf(q);
+    if (!q || x === -1) {
+        return str;
+    }
+    const l = q.length;
+    return str.substr(0, x) + '<b>' + str.substr(x, l) + '</b>' + str.substr(x + l);
+  }
+  
+  beautifySearchResults(matchString: string, resultArray: string[]){
+    let lenMatchString = matchString.length;
+    
+    let matchStringArr = matchString.split(" ");
+    let index = 0;
+    resultArray.forEach(result => {
+      matchStringArr.forEach(query => {
+        result = this.boldQuery(result, query);
+      });
+      this.searchAutocompleteResult[index] = result;
+      index++;
+      console.log("result: ", this.searchAutocompleteResult[index]);
+    });
+
   }
 
 

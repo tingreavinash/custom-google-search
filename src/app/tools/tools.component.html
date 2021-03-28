@@ -163,9 +163,10 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon2">Time</span>
             </div>
-            <select aria-describedby="selectTimeDescription" class="form-control" name="imageTimeDropdown" [(ngModel)]="selectedTimeDuration" id="imageTimeDropdown">
+            <select aria-describedby="selectTimeDescription" class="form-control"
+            name="imageTimeDropdown" [(ngModel)]="selectedTimeDuration" id="imageTimeDropdown">
                 <option selected disabled value="">Updated within</option>
-                <option value="" >Any</option>
+                <option value="">Any</option>
                 <option value="h" >Past hour</option>
                 <option value="d" >Past 24 hours</option>
                 <option value="w" >Past week</option>
@@ -178,17 +179,17 @@
 
         <div class="form-group text-center">
             <label for="searchInput">What do you want to search?</label>
+
             <input type="text" [(ngModel)]="searchQuery" (keyup)="fetchResults($event)" class="form-control text-center" id="searchInput"
                 aria-describedby="searchInput" name="searchInput"
                 placeholder="Say something.." required>
 
-                <ul class="list-group">
-                        
-                    <li class="list-group-item" (click)="setSearchInput(result)" *ngFor="let result of searchAutocompleteResult">
-                        {{result}}
-                    </li>
-                    
-                </ul>
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-action list-group-item-success" (click)="setSearchInput(result)" *ngFor="let result of searchAutocompleteResult">
+                       <span innerHTML="{{result}}"></span>
+                    </a>
+                </div>
+                
             <div class="custom-control custom-checkbox">
                 
                 <input class="custom-control-input" name="matchFullCheckbox" type="checkbox" id="matchFullCheckbox"
