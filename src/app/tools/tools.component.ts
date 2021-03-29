@@ -21,12 +21,13 @@ export class ToolsComponent implements OnInit {
   @ViewChild('searchResultTag', {static: true}) searchResultTag: ElementRef;
   @ViewChild('inputBox') inputBox: ElementRef;
   @ViewChild('resultlistDiv') resultlistDiv: ElementRef;
-  @ViewChild('hiddenBtn') hiddenBtn: ElementRef;
+  @ViewChild('hiddenBtn', {static: false}) hiddenBtn: ElementRef;
   
 
   searchAutocompleteResult: string[];
   searchResultOriginal: string[];
   isListOpen: boolean =false;
+  isFilterEnabled: boolean = true;
 
   siteOption: boolean;
   imageOption: boolean;
@@ -74,16 +75,27 @@ export class ToolsComponent implements OnInit {
     this.renderer.listen('window', 'click', (event: Event) =>{
       if (event.target !== this.inputBox.nativeElement &&
         event.target !== this.hiddenBtn.nativeElement  ){
-
+          this.isFilterEnabled = true;
           this.isListOpen =false;
         }
+
+
     });
     
   }
   enableList(){
+    //this.focusSearchBar();
     this.isListOpen =true;
+    this.isFilterEnabled  = false;
   }
   
+  focusSearchBar(){
+    var x = 0;
+    var y = 300;
+    window.scrollTo(x, y);
+    this.inputBox.nativeElement.focus();
+    
+  }
 
   ngOnInit(): void {
    
@@ -247,10 +259,10 @@ export class ToolsComponent implements OnInit {
   
 
   onKeyUpHandler(event: any){
+    
     if(event.key === "Escape"){
       this.isListOpen = false;
     }else{
-      
       this.isListOpen = true;
       let value = (event.target as HTMLSelectElement).value;
       let _url = `https://suggestqueries.google.com/complete/search?client=firefox&callback=myCustomFunction&q=${value}`;
