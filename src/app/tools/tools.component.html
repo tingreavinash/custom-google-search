@@ -4,13 +4,12 @@
         
         <div class="form-row align-items-center">
             <div class="col col-sm-3 text-center ">
-                <div class="form-group">
+                <div class="">
                     <div class="custom-control custom-checkbox">
                         <input class="custom-control-input" name="selectSiteCheckbox" type="checkbox" id="gridCheck"
                             [(ngModel)]="siteOption" (click)="enableOnlySiteOption()">
                         <label class="custom-control-label" for="gridCheck">
-                            Specific website
-                        </label>
+                            Specific website</label>
                     </div>
                 </div>
             </div>
@@ -29,15 +28,15 @@
             </div>
 
             <div class="col col-sm-3 text-center ">
-
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" name="selectNewsCheckbox" type="checkbox"
+                        id="selectNewsCheckbox" [(ngModel)]="newsOption" (click)="enableOnlyNewsOption()">
+                    <label class="custom-control-label" for="selectNewsCheckbox">
+                        News
+                    </label>
+                </div>
                 <div class="">
-                    <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input" name="selectNewsCheckbox" type="checkbox"
-                            id="selectNewsCheckbox" [(ngModel)]="newsOption" (click)="enableOnlyNewsOption()">
-                        <label class="custom-control-label" for="selectNewsCheckbox">
-                            News
-                        </label>
-                    </div>
+                    
                 </div>
             </div>
 
