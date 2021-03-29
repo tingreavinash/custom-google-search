@@ -32,6 +32,11 @@ export const WEBSITES: Website[] =[
         image: '/assets/images/Netlify-Logo.svg'
     },
     {
+        name: 'Amazon S3',
+        url: 's3.amazonaws.com',
+        image: '/assets/images/aws-s3.svg'
+    },
+    {
         name: 'Other',
         url: '',
         image: '/assets/images/other.svg'
