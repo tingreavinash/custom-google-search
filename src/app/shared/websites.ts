@@ -37,6 +37,26 @@ export const WEBSITES: Website[] =[
         image: '/assets/images/aws-s3.svg'
     },
     {
+        name: 'Dev To',
+        url: 'dev.to',
+        image: '/assets/images/devto.svg'
+    },
+    {
+        name: 'Hackernoon',
+        url: 'hackernoon.com',
+        image: '/assets/images/hackernoon.png'
+    },
+    {
+        name: 'Hackr.io',
+        url: 'hackr.io',
+        image: '/assets/images/hackrio.png'
+    },
+    {
+        name: 'Baeldung',
+        url: 'baeldung.com',
+        image: '/assets/images/baeldung.png'
+    },
+    {
         name: 'Other',
         url: '',
         image: '/assets/images/other.svg'

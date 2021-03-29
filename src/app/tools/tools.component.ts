@@ -24,10 +24,11 @@ export class ToolsComponent implements OnInit {
   @ViewChild('hiddenBtn', {static: false}) hiddenBtn: ElementRef;
   
 
-  searchAutocompleteResult: string[];
+  searchAutocompleteResult: string[] = [];
   searchResultOriginal: string[];
   isListOpen: boolean =false;
   isFilterEnabled: boolean = true;
+  isSpinnerEnabled: boolean = false;
 
   siteOption: boolean;
   imageOption: boolean;
@@ -86,7 +87,7 @@ export class ToolsComponent implements OnInit {
   enableList(){
     //this.focusSearchBar();
     this.isListOpen =true;
-    this.isFilterEnabled  = false;
+    
   }
   
   focusSearchBar(){
@@ -252,7 +253,7 @@ export class ToolsComponent implements OnInit {
       this.filterCondition = '';
 
     } else {
-      alert("Enter something");
+      alert("There is nothing to search :(");
     }
   }
 
@@ -262,6 +263,7 @@ export class ToolsComponent implements OnInit {
     
     if(event.key === "Escape"){
       this.isListOpen = false;
+      this.isFilterEnabled  = true;
     }else{
       this.isListOpen = true;
       let value = (event.target as HTMLSelectElement).value;
@@ -272,11 +274,13 @@ export class ToolsComponent implements OnInit {
         this.loadAPI = new Promise((resolve) => {
           this.loadScript(_url);
         });
-    
-    
+        
+
         }else{
           this.searchResultTag.nativeElement.value ='';
           this.searchAutocompleteResult =[];
+          this.isFilterEnabled  = true;
+
         }
       
     }
@@ -307,6 +311,9 @@ export class ToolsComponent implements OnInit {
     this.searchAutocompleteResult = scriptOutputString.split(",");
     
     this.beautifySearchResults(this.searchQuery, this.searchAutocompleteResult);
+    if (this.searchAutocompleteResult.length > 0){
+      this.isFilterEnabled  = false;
+    }
   }
   setCharAt(str: string,index: number,chr: string) {
     if(index > str.length-1) return str;

@@ -3,5 +3,7 @@
 
 .custom-header {
     box-shadow: 0px 4px 2px -2px #bdbdbd;
-    background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);
+    background-color: var(--dark);
+    color: white;
+    //background-image: linear-gradient(to right, #f83600 0%, #f9d423 100%);
 }
