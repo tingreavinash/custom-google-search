@@ -6,12 +6,14 @@ import { HeaderComponent } from './header/header.component';
 import { ToolsComponent } from './tools/tools.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { IframeComponent } from './iframe/iframe.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    ToolsComponent
+    ToolsComponent,
+    IframeComponent
   ],
   imports: [
     BrowserModule,

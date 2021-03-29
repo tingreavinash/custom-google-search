@@ -7,6 +7,7 @@ import { WebsitesService } from '../services/websites.service';
 import { FileType } from '../shared/filetype';
 import { ImageType } from '../shared/imageType';
 import { Website } from '../shared/website';
+import { IframeComponent } from '../iframe/iframe.component';
 
 @Component({
   selector: 'app-tools',
@@ -53,7 +54,7 @@ export class ToolsComponent implements OnInit {
   isDisabled: boolean = true;
   searchQuery: string;
   googleSearchURL: string = 'http://www.google.com/search';
-  fullSearchURL: string;
+  public fullSearchURL: string;
   filterCondition: string = '';
   matchFullPhrase: boolean = false;
 
@@ -264,6 +265,8 @@ export class ToolsComponent implements OnInit {
     if(event.key === "Escape"){
       this.isListOpen = false;
       this.isFilterEnabled  = true;
+    }else if(event.key === "Enter"){
+      console.log("Enter pressed");
     }else{
       this.isListOpen = true;
       let value = (event.target as HTMLSelectElement).value;

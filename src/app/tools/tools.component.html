@@ -180,21 +180,23 @@
         
         </div>
 
-        <div class="form-group text-center">
-            <!--<label for="searchInput">What do you want to search?</label> -->
-            <div class="inner-addon right-addon">
-                <i class="fas fa-search"></i>
+        <div class="form-group text-center" >
+            <!-- <label for="searchInput">What do you want to search?</label> -->
+            
+            <div class="inner-addon left-addon">
+                <i class="fas fa-search" style="color: gray;"></i>
                 
 
-                <input #inputBox type="text" [(ngModel)]="searchQuery" (click)="enableList()" (keyup)="onKeyUpHandler($event)" 
-            class="form-control text-center " id="searchInput"
+                <input #inputBox type="text" [(ngModel)]="searchQuery" (click)="enableList()" 
+                (keyup)="onKeyUpHandler($event)" 
+            class="form-control text-center" id="searchInput"
             aria-describedby="searchInput" name="searchInput"
-            placeholder="Enter your search query" >
+            placeholder="Enter your search query" autofocus>
             </div>
             
             <div class="list-group mr-5 ml-5" *ngIf="isListOpen" #resultlistDiv  >
                 
-                <a class="list-group-item list-group-item-action list-group-item-warning" (click)="setSearchInput(searchResultOriginal[i])" *ngFor="let result of searchAutocompleteResult; let i = index">
+                <a class="list-group-item list-group-item-action list-group-item-light" (click)="setSearchInput(searchResultOriginal[i])" *ngFor="let result of searchAutocompleteResult; let i = index">
                    <span  innerHTML="{{result}}"></span>
                 </a>
                 
@@ -202,7 +204,7 @@
 
                 
                 
-            <div class="custom-control custom-checkbox">
+            <div class="custom-control custom-checkbox mt-1">
                 
                 <input class="custom-control-input" name="matchFullCheckbox" type="checkbox" id="matchFullCheckbox"
                     [(ngModel)]="matchFullPhrase">
@@ -213,14 +215,15 @@
             </div>
            
             
-            
-            <button type="submit" (click)="executeSearchQuery()" class="btn btn-sm btn-outline-success mt-3">
-                Search on Google
-            </button>
+            <div class="row justify-content-center">
+                <button type="submit" (click)="executeSearchQuery()" class="btn btn-sm btn-block w-50 btn-outline-success mt-3">
+                    Search
+                </button>
+    
+            </div>
 
         </div>
 
-        <hr>
         <input hidden class="form-control" name="matchFullCheckbox1" type="text" id="searchResult"
                  #searchResultTag>
         <button #hiddenBtn hidden type="button" id="btnPopulateResults" class="btn btn-sm btn-info" (click)="buttonClicked()">click me</button>
@@ -230,3 +233,4 @@
 
 </div>
 
+<app-iframe></app-iframe>

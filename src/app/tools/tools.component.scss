@@ -18,7 +18,7 @@
 #searchInput {
     border-radius: 2rem;  
     font-weight: bold;
-    
+    margin-top: 6rem;    
 }
 
 
@@ -41,3 +41,11 @@
 /* add padding  */
 .left-addon input  { padding-left:  30px; }
 .right-addon input { padding-right: 30px; }
+
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+  }
