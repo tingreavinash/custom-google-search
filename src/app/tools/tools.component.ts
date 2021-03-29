@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FiletypesService } from '../services/filetypes.service';
 import { GooglesearchService } from '../services/googlesearch.service';
 import { ImagetypesService } from '../services/imagetypes.service';
@@ -15,7 +15,12 @@ import { Website } from '../shared/website';
 export class ToolsComponent implements OnInit {
 
   @ViewChild('searchResultTag', {static: true}) searchResultTag: ElementRef;
+  @ViewChild('inputBox') inputBox: ElementRef;
+  @ViewChild('resultlistDiv') resultlistDiv: ElementRef;
+
   searchAutocompleteResult: string[];
+  searchResultOriginal: string[];
+  isListOpen: boolean ;
 
   siteOption: boolean;
   imageOption: boolean;
@@ -50,13 +55,22 @@ export class ToolsComponent implements OnInit {
   constructor(private websiteService: WebsitesService,
     private imageService: ImagetypesService,
     private fileService: FiletypesService,
-    private googleService: GooglesearchService) {
+    private googleService: GooglesearchService,
+    private renderer: Renderer2) {
+
     this.availableWebsites = websiteService.getWebsites();
     this.selectedWebsite = new Website();
     this.selectedImageType = new ImageType();
     this.availableFiletypes = fileService.getFileTypes();
 
     this.availableImageTypes = imageService.getImageTypes();
+
+    this.renderer.listen('window', 'click', (event: Event) =>{
+      if (event.target !== this.inputBox.nativeElement ){
+        //console.log("making false");
+          this.isListOpen =false;
+        }
+    });
     
   }
 
@@ -221,6 +235,7 @@ export class ToolsComponent implements OnInit {
 
 
   fetchResults(event: Event){
+    this.isListOpen = true;
     let value = (event.target as HTMLSelectElement).value;
     let _url = `https://suggestqueries.google.com/complete/search?client=firefox&callback=myCustomFunction&q=${value}`;
     //let _url = `https://en.wikipedia.org/w/api.php?action=opensearch&limit=10&format=json&callback=myCustomFunction&search=${value}`;
@@ -261,7 +276,7 @@ export class ToolsComponent implements OnInit {
     let scriptOutputString = this.searchResultTag.nativeElement.value;
     this.searchAutocompleteResult = scriptOutputString.split(",");
     
-    //this.beautifySearchResults(this.searchQuery, this.searchAutocompleteResult);
+    this.beautifySearchResults(this.searchQuery, this.searchAutocompleteResult);
   }
   setCharAt(str: string,index: number,chr: string) {
     if(index > str.length-1) return str;
@@ -286,11 +301,15 @@ export class ToolsComponent implements OnInit {
     
     let matchStringArr = matchString.split(" ");
     let index = 0;
+
+    this.searchResultOriginal = [...this.searchAutocompleteResult] ;
     resultArray.forEach(result => {
       matchStringArr.forEach(query => {
         result = this.boldQuery(result, query);
       });
+
       this.searchAutocompleteResult[index] = result;
+
       index++;
     });
 

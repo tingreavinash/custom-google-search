@@ -180,12 +180,12 @@
         <div class="form-group text-center">
             <label for="searchInput">What do you want to search?</label>
 
-            <input type="text" [(ngModel)]="searchQuery" (keyup)="fetchResults($event)" class="form-control text-center" id="searchInput"
+            <input #inputBox type="text" [(ngModel)]="searchQuery" (keyup)="fetchResults($event)" class="form-control text-center" id="searchInput"
                 aria-describedby="searchInput" name="searchInput"
-                placeholder="Say something.." required>
+                placeholder="Say something.." >
 
-                <div class="list-group">
-                    <a class="list-group-item list-group-item-action list-group-item-success" (click)="setSearchInput(result)" *ngFor="let result of searchAutocompleteResult">
+                <div class="list-group" #resultlistDiv>
+                    <a class="list-group-item list-group-item-action list-group-item-success" (click)="setSearchInput(searchResultOriginal[i])" *ngFor="let result of searchAutocompleteResult; let i = index">
                        <span innerHTML="{{result}}"></span>
                     </a>
                 </div>
