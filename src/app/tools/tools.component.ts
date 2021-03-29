@@ -1,4 +1,5 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { animate, query, stagger, state, style, transition, trigger } from '@angular/animations';
+import { Component, ElementRef, HostBinding, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FiletypesService } from '../services/filetypes.service';
 import { GooglesearchService } from '../services/googlesearch.service';
 import { ImagetypesService } from '../services/imagetypes.service';
@@ -10,9 +11,12 @@ import { Website } from '../shared/website';
 @Component({
   selector: 'app-tools',
   templateUrl: './tools.component.html',
-  styleUrls: ['./tools.component.scss']
+  styleUrls: ['./tools.component.scss'],
+  
 })
 export class ToolsComponent implements OnInit {
+
+
 
   @ViewChild('searchResultTag', {static: true}) searchResultTag: ElementRef;
   @ViewChild('inputBox') inputBox: ElementRef;
@@ -22,7 +26,7 @@ export class ToolsComponent implements OnInit {
 
   searchAutocompleteResult: string[];
   searchResultOriginal: string[];
-  isListOpen: boolean ;
+  isListOpen: boolean =false;
 
   siteOption: boolean;
   imageOption: boolean;
@@ -71,16 +75,15 @@ export class ToolsComponent implements OnInit {
       if (event.target !== this.inputBox.nativeElement &&
         event.target !== this.hiddenBtn.nativeElement  ){
 
-          console.log("making false, clicked on : ", event.target);
           this.isListOpen =false;
         }
     });
     
   }
   enableList(){
-    console.log("making true");
     this.isListOpen =true;
   }
+  
 
   ngOnInit(): void {
    
@@ -241,24 +244,31 @@ export class ToolsComponent implements OnInit {
     }
   }
 
+  
 
-  fetchResults(event: Event){
-    this.isListOpen = true;
-    let value = (event.target as HTMLSelectElement).value;
-    let _url = `https://suggestqueries.google.com/complete/search?client=firefox&callback=myCustomFunction&q=${value}`;
-    //let _url = `https://en.wikipedia.org/w/api.php?action=opensearch&limit=10&format=json&callback=myCustomFunction&search=${value}`;
-
-    if (value != null && value !=''){
-
-    this.loadAPI = new Promise((resolve) => {
-      this.loadScript(_url);
-    });
-
-
+  onKeyUpHandler(event: any){
+    if(event.key === "Escape"){
+      this.isListOpen = false;
     }else{
-      this.searchResultTag.nativeElement.value ='';
-      this.searchAutocompleteResult =[];
-    } 
+      
+      this.isListOpen = true;
+      let value = (event.target as HTMLSelectElement).value;
+      let _url = `https://suggestqueries.google.com/complete/search?client=firefox&callback=myCustomFunction&q=${value}`;
+      //let _url = `https://en.wikipedia.org/w/api.php?action=opensearch&limit=10&format=json&callback=myCustomFunction&search=${value}`;
+      if (value != null && value !=''){
+
+        this.loadAPI = new Promise((resolve) => {
+          this.loadScript(_url);
+        });
+    
+    
+        }else{
+          this.searchResultTag.nativeElement.value ='';
+          this.searchAutocompleteResult =[];
+        }
+      
+    }
+
 
   }
 

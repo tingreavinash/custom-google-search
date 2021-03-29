@@ -178,16 +178,21 @@
 
         <div class="form-group text-center">
             <label for="searchInput">What do you want to search?</label>
-
-            <input #inputBox type="text" [(ngModel)]="searchQuery" (click)="enableList()" (keyup)="fetchResults($event)" class="form-control text-center" id="searchInput"
+            <div class="row justify-content-center">
+                <input #inputBox type="text" [(ngModel)]="searchQuery" (click)="enableList()" (keyup)="onKeyUpHandler($event)" class="form-control text-center mr-5 ml-5" id="searchInput"
                 aria-describedby="searchInput" name="searchInput"
-                placeholder="Say something.." >
-
-                <div class="list-group" *ngIf="isListOpen" #resultlistDiv>
-                    <a class="list-group-item list-group-item-action list-group-item-success" (click)="setSearchInput(searchResultOriginal[i])" *ngFor="let result of searchAutocompleteResult; let i = index">
+                placeholder="Type something.." >
+                <div class="list-group mr-5 ml-5"  *ngIf="isListOpen"  #resultlistDiv>
+                    
+                    <a  class="list-group-item list-group-item-action list-group-item-success" (click)="setSearchInput(searchResultOriginal[i])" *ngFor="let result of searchAutocompleteResult; let i = index">
                        <span innerHTML="{{result}}"></span>
                     </a>
+                    
                 </div>
+
+            </div>
+
+                
                 
             <div class="custom-control custom-checkbox">
                 
@@ -198,6 +203,7 @@
                     Match full phrase
                 </label>
             </div>
+           
             
             
             <button type="submit" (click)="executeSearchQuery()" class="btn btn-sm btn-outline-success mt-3">
