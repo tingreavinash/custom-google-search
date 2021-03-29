@@ -17,6 +17,8 @@ export class ToolsComponent implements OnInit {
   @ViewChild('searchResultTag', {static: true}) searchResultTag: ElementRef;
   @ViewChild('inputBox') inputBox: ElementRef;
   @ViewChild('resultlistDiv') resultlistDiv: ElementRef;
+  @ViewChild('hiddenBtn') hiddenBtn: ElementRef;
+  
 
   searchAutocompleteResult: string[];
   searchResultOriginal: string[];
@@ -66,12 +68,18 @@ export class ToolsComponent implements OnInit {
     this.availableImageTypes = imageService.getImageTypes();
 
     this.renderer.listen('window', 'click', (event: Event) =>{
-      if (event.target !== this.inputBox.nativeElement ){
-        //console.log("making false");
+      if (event.target !== this.inputBox.nativeElement &&
+        event.target !== this.hiddenBtn.nativeElement  ){
+
+          console.log("making false, clicked on : ", event.target);
           this.isListOpen =false;
         }
     });
     
+  }
+  enableList(){
+    console.log("making true");
+    this.isListOpen =true;
   }
 
   ngOnInit(): void {

@@ -180,11 +180,11 @@
         <div class="form-group text-center">
             <label for="searchInput">What do you want to search?</label>
 
-            <input #inputBox type="text" [(ngModel)]="searchQuery" (keyup)="fetchResults($event)" class="form-control text-center" id="searchInput"
+            <input #inputBox type="text" [(ngModel)]="searchQuery" (click)="enableList()" (keyup)="fetchResults($event)" class="form-control text-center" id="searchInput"
                 aria-describedby="searchInput" name="searchInput"
                 placeholder="Say something.." >
 
-                <div class="list-group" #resultlistDiv>
+                <div class="list-group" *ngIf="isListOpen" #resultlistDiv>
                     <a class="list-group-item list-group-item-action list-group-item-success" (click)="setSearchInput(searchResultOriginal[i])" *ngFor="let result of searchAutocompleteResult; let i = index">
                        <span innerHTML="{{result}}"></span>
                     </a>
@@ -210,7 +210,7 @@
         <hr>
         <input hidden class="form-control" name="matchFullCheckbox1" type="text" id="searchResult"
                  #searchResultTag>
-        <button hidden type="button" id="btnPopulateResults" class="btn btn-sm btn-info" (click)="buttonClicked()">click me</button>
+        <button #hiddenBtn hidden type="button" id="btnPopulateResults" class="btn btn-sm btn-info" (click)="buttonClicked()">click me</button>
     </form> 
     
     
