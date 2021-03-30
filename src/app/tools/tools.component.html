@@ -1,141 +1,244 @@
 <div class="container">
     <form class="mt-2" autocomplete="off">
+
         <div *ngIf="isFilterEnabled">
+
+            <div *ngIf="siteOption" class="text-center">
+                <img class="mx-auto d-block website-image" src="{{selectedWebsite.image}}" alt="{{selectedWebsite.name}}">
+            </div>
             
-        <div class="form-row align-items-center">
-            <div class="col col-sm-3 text-center ">
-                <div class="">
-                    <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input" name="selectSiteCheckbox" type="checkbox" id="gridCheck"
-                            [(ngModel)]="siteOption" (click)="enableOnlySiteOption()">
-                        <label class="custom-control-label" for="gridCheck">
-                            Specific website</label>
-                    </div>
-                </div>
+        </div>
+
+        <div class="row justify-content-center align-items-center">
+            <button type="button" class="btn btn-sm btn-warning mt-3" data-toggle="modal" data-target="#exampleModal">
+                Improve Search
+            </button>
+
+    
+        </div>
+        <div class="row justify-content-center align-items-center mt-2" *ngIf="siteOption || newsOption || imageOption || filesOption">
+            <span>
+                <i class="fas fa-check-circle" style="color: var(--success);"></i> Filter selected
+            </span>
+            
+
+        </div>
+           
+                            
+       
+
+        <div class="form-group text-center searchInputGroup" >
+            <!-- <label for="searchInput">What do you want to search?</label> -->
+            
+            <div class="inner-addon left-addon" >
+                <i class="fas fa-search" style="color: gray;"></i>
+                
+
+                <input #inputBox type="text" [(ngModel)]="searchQuery" (click)="enableList()" 
+                (keyup)="onKeyUpHandler($event)" 
+            class="form-control text-center" id="searchInput"
+            aria-describedby="searchInput" name="searchInput"
+            placeholder="Enter your search query" [ngClass]="{'halfBorderRadius': isListOpen}" autofocus>
             </div>
-
-            <div class="col col-sm-3 text-center">
-
-                <div class="">
-                    <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input" name="selectImageCheckbox" type="checkbox"
-                            id="imageOptionCheckbox" [(ngModel)]="imageOption" (click)="enableOnlyImageOption()">
-                        <label class="custom-control-label" for="imageOptionCheckbox">
-                            Images
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col col-sm-3 text-center ">
-                <div class="custom-control custom-checkbox">
-                    <input class="custom-control-input" name="selectNewsCheckbox" type="checkbox"
-                        id="selectNewsCheckbox" [(ngModel)]="newsOption" (click)="enableOnlyNewsOption()">
-                    <label class="custom-control-label" for="selectNewsCheckbox">
-                        News
-                    </label>
-                </div>
-                <div class="">
+            <div class="row justify-content-center" *ngIf="isListOpen">
+                <div class="list-group mr-5 ml-5 inputSuggestions"  #resultlistDiv  >
+                    
+                    <a class="list-group-item list-group-item-action list-group-item-light"
+                    [class.active]="i == arrowkeyLocation" (click)="setSearchInput(searchResultOriginal[i])" *ngFor="let result of searchAutocompleteResult; let i = index">
+                       <span  innerHTML="{{result}}"></span>
+                    </a>
                     
                 </div>
+    
             </div>
 
-            <div class="col col-sm-3 text-center">
+                
+                
+            <div class="custom-control custom-checkbox mt-1">
+                
+                <input class="custom-control-input" name="matchFullCheckbox" type="checkbox" id="matchFullCheckbox"
+                    [(ngModel)]="matchFullPhrase">
+                    
+                <label class="custom-control-label" for="matchFullCheckbox">
+                    Match full phrase
+                </label>
+            </div>
+           
+            
+            <div class="row justify-content-center">
+                <button type="button" (click)="executeSearchQuery()" class="btn btn-sm btn-block w-50 btn-outline-success mt-3">
+                    Search
+                </button>
 
-                <div class="">
-                    <div class="custom-control custom-checkbox">
-                        <input class="custom-control-input" name="selectFilesCheckbox" type="checkbox"
-                            id="selectFilesCheckbox" [(ngModel)]="filesOption" (click)="enableFilesOption()">
-                        <label class="custom-control-label" for="selectFilesCheckbox">
-                            Files
-                        </label>
+    
+            </div>
+
+        </div>
+
+        <input hidden class="form-control" name="matchFullCheckbox1" type="text" id="searchResult"
+                 #searchResultTag>
+        <button #hiddenBtn hidden type="button" id="btnPopulateResults" class="btn btn-sm btn-info" (click)="buttonClicked()">click me</button>
+    </form> 
+    
+
+
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Select Filters</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+            <div *ngIf="siteOption" class="text-center">
+                <img class="mx-auto d-block website-image" src="{{selectedWebsite.image}}" alt="{{selectedWebsite.name}}">
+            </div>
+          
+            <!-- Select options-->
+            <div class="form-row align-items-center">
+                <div class="col col-sm-3 text-center ">
+                    <div class="">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" name="selectSiteCheckbox" type="checkbox" id="gridCheck"
+                                [(ngModel)]="siteOption" (click)="enableOnlySiteOption()">
+                            <label class="custom-control-label" for="gridCheck">
+                                Website</label>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-
-
-
-        </div>
-        <hr>
-
-        <div *ngIf="siteOption" class="text-center">
-            <img class="mx-auto d-block website-image" src="{{selectedWebsite.image}}" alt="{{selectedWebsite.name}}">
-        </div>
-
-        <div *ngIf="imageOption">
-            
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon2">Image type</span>
+    
+                <div class="col col-sm-3 text-center">
+    
+                    <div class="">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" name="selectImageCheckbox" type="checkbox"
+                                id="imageOptionCheckbox" [(ngModel)]="imageOption" (click)="enableOnlyImageOption()">
+                            <label class="custom-control-label" for="imageOptionCheckbox">
+                                Images
+                            </label>
+                        </div>
+                    </div>
                 </div>
-                <select class="form-control" (change)="onSelect($event)" id="imageTypeDropdown">
-                    <option selected disabled value="">Image Type</option>
-                    <option value="" >Any</option>
-                    <option *ngFor="let imgType of availableImageTypes">
-
-                        {{imgType.type }}
-
-                    </option>
-
-                </select>
-
-            </div>
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon3">Image size</span>
+    
+                <div class="col col-sm-3 text-center ">
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" name="selectNewsCheckbox" type="checkbox"
+                            id="selectNewsCheckbox" [(ngModel)]="newsOption" (click)="enableOnlyNewsOption()">
+                        <label class="custom-control-label" for="selectNewsCheckbox">
+                            News
+                        </label>
+                    </div>
+                    <div class="">
+                        
+                    </div>
                 </div>
-                <select class="form-control" name="imageSizeDropdown" [(ngModel)]="selectedImageSize" id="imageTypeDropdown">
-                    <option selected disabled value="">Image size</option>
-                    <option value="" >Any</option>
-                    <option value="l" >Large</option>
-                    <option value="m" >Medium</option>
-                    <option value="i" >Icon</option>
-
-                </select>
-                
-
+    
+                <div class="col col-sm-3 text-center">
+    
+                    <div class="">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" name="selectFilesCheckbox" type="checkbox"
+                                id="selectFilesCheckbox" [(ngModel)]="filesOption" (click)="enableFilesOption()">
+                            <label class="custom-control-label" for="selectFilesCheckbox">
+                                Files
+                            </label>
+                        </div>
+                    </div>
+                </div>
+    
+    
+    
+    
             </div>
             
+            <!-- Select options-->
+            <hr>
 
-
-        </div>
-
-        <div *ngIf="filesOption">
-
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon2">File type</span>
+            <!-- Image type -->
+            <div *ngIf="imageOption">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon2">Image type</span>
+                    </div>
+                    <select class="form-control" (change)="onSelect($event)" id="imageTypeDropdown">
+                        <option selected disabled value="">Image Type</option>
+                        <option value="" >Any</option>
+                        <option *ngFor="let imgType of availableImageTypes">
+    
+                            {{imgType.type }}
+    
+                        </option>
+    
+                    </select>
     
                 </div>
-                <select class="form-control" multiple="multiple" name="fileTypeDropdown" [(ngModel)]="selectedFiletypes" id="fileTypeDropdown">
-                    <option *ngFor="let filetype of availableFiletypes">
-
-                        {{filetype.type | uppercase}}
-
-                    </option>
-
-                </select>
-                
-
-                <div class="input-group-append">
-                    <button type="button" (click)="clearFileTypeSelection()" class="btn btn-secondary">Clear</button>
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon3">Image size</span>
+                    </div>
+                    <select class="form-control" name="imageSizeDropdown" [(ngModel)]="selectedImageSize" id="imageTypeDropdown">
+                        <option selected disabled value="">Image size</option>
+                        <option value="" >Any</option>
+                        <option value="l" >Large</option>
+                        <option value="m" >Medium</option>
+                        <option value="i" >Icon</option>
+    
+                    </select>
+                    
+    
                 </div>
-
-            </div>
-            <div class="input-group input-group-sm mb-2">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon2">Filetype not found?</span>
-                </div>
-                <input type="text" class="form-control" [(ngModel)]="userGivenFiletype"
-                name="inlineFormInputGroup" placeholder="Enter file extention here">
             </div>
             
+            <!-- Image type-->
 
+            <!-- Files Option-->
+            <div *ngIf="filesOption">
 
-        </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon2">File type</span>
+        
+                    </div>
+                    <select class="form-control" multiple="multiple" name="fileTypeDropdown" [(ngModel)]="selectedFiletypes" id="fileTypeDropdown">
+                        <option *ngFor="let filetype of availableFiletypes">
+    
+                            {{filetype.type | uppercase}}
+    
+                        </option>
+    
+                    </select>
+                    
+    
+                    <div class="input-group-append">
+                        <button type="button" (click)="clearFileTypeSelection()" class="btn btn-secondary">Clear</button>
+                    </div>
+    
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon2">Filetype not found?</span>
+                    </div>
+                    <input type="text" class="form-control" [(ngModel)]="userGivenFiletype"
+                    name="inlineFormInputGroup" placeholder="Enter file extention here">
+                </div>
+                
+    
+    
+            </div>
+            <!-- Files Option-->
 
-        <div *ngIf="siteOption">
+            <!-- Site Option-->
+
+            <div *ngIf="siteOption">
            
                 
                 <div class="form-group input-group input-group-sm">
@@ -156,82 +259,47 @@
                 
         </div>
 
-        <div class="row justify-content-center">
-            <div class=" input-group input-group-sm w-50 mb-3">
+            <!-- Site Option-->
 
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon2"><i class="fas fa-history"></i></span>
-                    
-                    
+            <!-- Time duration-->
+            
+            <div class="form-row">
+                <div class=" input-group input-group-sm mb-3">
+    
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon2">Time range</span>
+                        
+                        
+                    </div>
+                    <select aria-describedby="selectTimeDescription" class="form-control"
+                    name="imageTimeDropdown" [(ngModel)]="selectedTimeDuration" id="imageTimeDropdown">
+                        <option selected disabled value="">Updated within</option>
+                        <option value="">Any</option>
+                        <option value="h" >Past hour</option>
+                        <option value="d" >Past 24 hours</option>
+                        <option value="w" >Past week</option>
+                        <option value="m" >Past month</option>
+                        <option value="y" >Past year</option>
+                        
+                    </select>
                 </div>
-                <select aria-describedby="selectTimeDescription" class="form-control"
-                name="imageTimeDropdown" [(ngModel)]="selectedTimeDuration" id="imageTimeDropdown">
-                    <option selected disabled value="">Updated within</option>
-                    <option value="">Any</option>
-                    <option value="h" >Past hour</option>
-                    <option value="d" >Past 24 hours</option>
-                    <option value="w" >Past week</option>
-                    <option value="m" >Past month</option>
-                    <option value="y" >Past year</option>
-                    
-                </select>
-            </div>
-        </div>
-        
-        </div>
-
-        <div class="form-group text-center" >
-            <!-- <label for="searchInput">What do you want to search?</label> -->
-            
-            <div class="inner-addon left-addon">
-                <i class="fas fa-search" style="color: gray;"></i>
-                
-
-                <input #inputBox type="text" [(ngModel)]="searchQuery" (click)="enableList()" 
-                (keyup)="onKeyUpHandler($event)" 
-            class="form-control text-center" id="searchInput"
-            aria-describedby="searchInput" name="searchInput"
-            placeholder="Enter your search query" autofocus>
-            </div>
-            
-            <div class="list-group mr-5 ml-5" *ngIf="isListOpen" #resultlistDiv  >
-                
-                <a class="list-group-item list-group-item-action list-group-item-light"
-                [class.active]="i == arrowkeyLocation" (click)="setSearchInput(searchResultOriginal[i])" *ngFor="let result of searchAutocompleteResult; let i = index">
-                   <span  innerHTML="{{result}}"></span>
-                </a>
-                
             </div>
 
-                
-                
-            <div class="custom-control custom-checkbox mt-1">
-                
-                <input class="custom-control-input" name="matchFullCheckbox" type="checkbox" id="matchFullCheckbox"
-                    [(ngModel)]="matchFullPhrase">
-                    
-                <label class="custom-control-label" for="matchFullCheckbox">
-                    Match full phrase
-                </label>
+            <!-- Time duration-->
+
+            <!-- News option-->
+            <div *ngIf="newsOption">
+                <h5 class="text-center"><span class="badge badge-sm badge-info">Note:</span> Only news will be searched.</h5>
             </div>
-           
-            
-            <div class="row justify-content-center">
-                <button type="button" (click)="executeSearchQuery()" class="btn btn-sm btn-block w-50 btn-outline-success mt-3">
-                    Search
-                </button>
-    
-            </div>
+            <!-- News option-->
 
         </div>
-
-        <input hidden class="form-control" name="matchFullCheckbox1" type="text" id="searchResult"
-                 #searchResultTag>
-        <button #hiddenBtn hidden type="button" id="btnPopulateResults" class="btn btn-sm btn-info" (click)="buttonClicked()">click me</button>
-    </form> 
-    
-    
-
-</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-secondary" (click)="clearAllFilters()">Clear All</button>
+          <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <app-iframe></app-iframe>

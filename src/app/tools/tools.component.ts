@@ -13,43 +13,46 @@ import { IframeComponent } from '../iframe/iframe.component';
   selector: 'app-tools',
   templateUrl: './tools.component.html',
   styleUrls: ['./tools.component.scss'],
-  
+
 })
 export class ToolsComponent implements OnInit {
 
 
 
-  @ViewChild('searchResultTag', {static: true}) searchResultTag: ElementRef;
+  @ViewChild('searchResultTag', { static: true }) searchResultTag: ElementRef;
   @ViewChild('inputBox') inputBox: ElementRef;
   @ViewChild('resultlistDiv') resultlistDiv: ElementRef;
-  @ViewChild('hiddenBtn', {static: false}) hiddenBtn: ElementRef;
-  
+  @ViewChild('hiddenBtn', { static: false }) hiddenBtn: ElementRef;
+
 
   searchAutocompleteResult: string[] = [];
   searchResultOriginal: string[];
-  isListOpen: boolean =false;
+  isListOpen: boolean = false;
   isFilterEnabled: boolean = true;
   isSpinnerEnabled: boolean = false;
+  inputTarget: any;
 
   siteOption: boolean;
   imageOption: boolean;
   newsOption: boolean;
   filesOption: boolean;
 
-  
-  availableWebsites: Website[];
-  availableImageTypes: ImageType[];
-  availableFiletypes: FileType[];
-
-  selectedWebsiteOption: String;
-  
   selectedWebsite: Website;
   selectedImageType: ImageType;
   selectedFiletypes: string[] = [];
   userGivenFiletype: string;
 
   selectedImageSize: string;
-  selectedTimeDuration: string ="";
+  selectedTimeDuration: string = "";
+
+
+  availableWebsites: Website[];
+  availableImageTypes: ImageType[];
+  availableFiletypes: FileType[];
+
+  selectedWebsiteOption: String;
+
+
 
   isDisabled: boolean = true;
   searchQuery: string;
@@ -74,43 +77,49 @@ export class ToolsComponent implements OnInit {
 
     this.availableImageTypes = imageService.getImageTypes();
 
-    this.renderer.listen('window', 'click', (event: Event) =>{
+    this.renderer.listen('window', 'click', (event: Event) => {
       if (event.target !== this.inputBox.nativeElement &&
-        event.target !== this.hiddenBtn.nativeElement  ){
-          this.isFilterEnabled = true;
-          this.isListOpen =false;
-        }
+        event.target !== this.hiddenBtn.nativeElement) {
+        this.isFilterEnabled = true;
+        this.isListOpen = false;
+      }
 
 
     });
-    
+
   }
-  enableList(){
+  enableList() {
     //this.focusSearchBar();
-    this.isListOpen =true;
-    
+
+    if (this.searchAutocompleteResult.length > 0) {
+      this.isListOpen = true;
+    } else {
+      this.isListOpen = false;
+    }
+
+
   }
-  
-  focusSearchBar(){
+
+  focusSearchBar() {
     var x = 0;
     var y = 300;
     window.scrollTo(x, y);
     this.inputBox.nativeElement.focus();
-    
+
   }
 
   ngOnInit(): void {
-   
+
   }
 
-  clearFileTypeSelection(){
+  clearFileTypeSelection() {
     this.selectedFiletypes = [];
   }
 
   isOtherOptionSelected() {
 
     if (this.selectedWebsite.name === 'Other') {
-      
+
       this.isDisabled = false;
     } else {
       this.isDisabled = true;
@@ -131,72 +140,72 @@ export class ToolsComponent implements OnInit {
 
   createSearchQuery() {
     this.fullSearchURL = this.googleSearchURL;
-    let formattedSearchString: string =  this.searchQuery;
+    let formattedSearchString: string = this.searchQuery;
     if (this.matchFullPhrase) {
       formattedSearchString = this.createFullPhrase(this.searchQuery);
     }
-    if (this.siteOption ) {
+    if (this.siteOption && this.selectedWebsite.url != "" && this.selectedWebsite.url !=null) {
       this.appendString("?q=site:" + this.selectedWebsite.url);
-      this.appendString(' '+ formattedSearchString);
-      if(this.filesOption){
-        if(this.userGivenFiletype !=null && this.userGivenFiletype !=""){
+      this.appendString(' ' + formattedSearchString);
+      if (this.filesOption) {
+        if (this.userGivenFiletype != null && this.userGivenFiletype != "") {
           this.selectedFiletypes = [];
           this.selectedFiletypes.push(this.userGivenFiletype);
         }
-  
-        if (this.selectedFiletypes.length > 0 ){
+
+        if (this.selectedFiletypes.length > 0) {
           this.selectedFiletypes.forEach(element => {
-            this.appendString(" filetype:"+element);
+            this.appendString(" filetype:" + element);
             this.appendString(" OR ");
-            
+
           });
-        }  
+        }
       }
 
-      this.appendString("&tbs=qdr:"+this.selectedTimeDuration);
+      this.appendString("&tbs=qdr:" + this.selectedTimeDuration);
       this.fullSearchURL += this.filterCondition;
 
-    }else if (this.imageOption ) {
-      
+    } else if (this.imageOption) {
+
       this.appendString("?hl=en&tbm=isch&tbs=");
-      if(this.selectedImageType != null){
-        this.appendString("ift:" + this.selectedImageType.type+',');
+      if (this.selectedImageType != null) {
+        this.appendString("ift:" + this.selectedImageType.type + ',');
       }
-      this.appendString("isz:"+this.selectedImageSize+',');
-      this.appendString("qdr:"+this.selectedTimeDuration);
+      this.appendString("isz:" + this.selectedImageSize + ',');
+      this.appendString("qdr:" + this.selectedTimeDuration);
       this.fullSearchURL += this.filterCondition;
-      this.fullSearchURL += '&q='+ formattedSearchString;
-    }else if(this.newsOption){
+      this.fullSearchURL += '&q=' + formattedSearchString;
+    } else if (this.newsOption) {
       this.appendString("?q=" + formattedSearchString);
-      this.appendString("&tbs=qdr:"+this.selectedTimeDuration);
+      this.appendString("&tbs=qdr:" + this.selectedTimeDuration);
       this.appendString("&tbm=nws");
       this.fullSearchURL += this.filterCondition;
-    }else if (this.filesOption){
+    } else if (this.filesOption) {
 
       this.appendString("?q=" + formattedSearchString);
 
-      if(this.userGivenFiletype !=null && this.userGivenFiletype !=""){
+      if (this.userGivenFiletype != null && this.userGivenFiletype != "") {
         this.selectedFiletypes = [];
         this.selectedFiletypes.push(this.userGivenFiletype);
       }
 
-      if (this.selectedFiletypes.length >1 ){
+      if (this.selectedFiletypes.length > 1) {
         this.selectedFiletypes.forEach(element => {
-          this.appendString(" filetype:"+element);
+          this.appendString(" filetype:" + element);
           this.appendString(" OR ");
-          
+
         });
-      }else if (this.selectedFiletypes.length === 1){
-        this.appendString(" filetype:"+this.selectedFiletypes[0]);
+      } else if (this.selectedFiletypes.length === 1) {
+        this.appendString(" filetype:" + this.selectedFiletypes[0]);
       }
 
-      this.appendString("&tbs=qdr:"+this.selectedTimeDuration);
+      this.appendString("&tbs=qdr:" + this.selectedTimeDuration);
       this.fullSearchURL += this.filterCondition;
 
-    }else {
-      this.fullSearchURL += '?q='+ formattedSearchString;
+    } else {
+      this.fullSearchURL += '?q=' + formattedSearchString;
 
-      this.appendString("&tbs=qdr:"+this.selectedTimeDuration);
+      this.appendString("&tbs=qdr:" + this.selectedTimeDuration);
       this.fullSearchURL += this.filterCondition;
 
 
@@ -204,44 +213,64 @@ export class ToolsComponent implements OnInit {
 
   }
 
-  specificWebsiteService(selectedValue: string){
+  specificWebsiteService(selectedValue: string) {
     let selectedOption = selectedValue;
     this.selectedWebsite = this.websiteService.getWebsite(selectedOption);
     this.isOtherOptionSelected();
   }
 
-  searchImagesService(selectedValue: string){
+  searchImagesService(selectedValue: string) {
     let selectedOption = selectedValue;
     this.selectedImageType = this.imageService.getImageType(selectedOption);
   }
-  enableOnlySiteOption(){
-    this.imageOption = false; 
+  enableOnlySiteOption() {
+    this.imageOption = false;
     this.newsOption = false;
   }
-  enableOnlyImageOption(){
+  enableOnlyImageOption() {
     this.siteOption = false;
     this.newsOption = false;
     this.filesOption = false;
   }
-  enableOnlyNewsOption(){
+  enableOnlyNewsOption() {
     this.imageOption = false;
     this.siteOption = false;
     this.filesOption = false;
   }
-  enableFilesOption(){
+  enableFilesOption() {
     this.imageOption = false;
     this.newsOption = false;
   }
 
   onSelect(event: Event) {
     let selectedOption = (event.target as HTMLSelectElement).value;
-    if (this.siteOption){
+    if (this.siteOption) {
       this.specificWebsiteService(selectedOption);
-    }else if (this.imageOption){
+    } else if (this.imageOption) {
       this.searchImagesService(selectedOption);
     }
-    
 
+
+
+  }
+
+  clearAllFilters(){
+
+    
+  this.siteOption = false;
+  this.imageOption = false;
+  this.newsOption = false;
+  this.filesOption = false;
+
+  this.selectedWebsiteOption = "";
+  
+  this.selectedFiletypes = [];
+  
+  this.selectedImageType = null;
+  this.userGivenFiletype = "";
+
+  this.selectedImageSize = "";
+  this.selectedTimeDuration = "";
 
   }
 
@@ -258,43 +287,47 @@ export class ToolsComponent implements OnInit {
     }
   }
 
-  
+
   arrowkeyLocation = 0;
 
-  onKeyUpHandler(event: any){
+  onKeyUpHandler(event: any) {
+    this.inputTarget = event.target;
 
-    if(event.key === "Escape"){
+
+    if (event.key === "Escape") {
       this.isListOpen = false;
-      this.isFilterEnabled  = true;
-    }else if(event.key === "Enter"){
-      if(this.isListOpen){
+      this.isFilterEnabled = true;
+    } else if (event.key === "Enter") {
+      if (this.isListOpen) {
         this.isListOpen = false;
-        this.isFilterEnabled = true;  
-      }else{
+        this.isFilterEnabled = true;
+
+      } else {
         this.executeSearchQuery();
       }
-    }else if(event.key != "ArrowDown" && event.key != "ArrowUp"){
+    } else if (event.key != "ArrowDown" && event.key != "ArrowUp") {
+
       this.isListOpen = true;
       let value = (event.target as HTMLSelectElement).value;
       let _url = `https://suggestqueries.google.com/complete/search?client=firefox&callback=myCustomFunction&q=${value}`;
       //let _url = `https://en.wikipedia.org/w/api.php?action=opensearch&limit=10&format=json&callback=myCustomFunction&search=${value}`;
-      if (value != null && value !=''){
+      if (value != null && value != '') {
 
         this.loadAPI = new Promise((resolve) => {
           this.loadScript(_url);
         });
-        }else{
-          this.searchResultTag.nativeElement.value ='';
-          this.searchAutocompleteResult =[];
-          this.isFilterEnabled  = true;
+      } else {
+        this.searchResultTag.nativeElement.value = '';
+        this.searchAutocompleteResult = [];
+        this.isFilterEnabled = true;
 
-        }
-      
-    }else if(this.searchAutocompleteResult.length > 0){
-      
-      if(this.arrowkeyLocation > this.searchAutocompleteResult.length ) this.arrowkeyLocation = 0;
-      if (this.arrowkeyLocation < 0 ) this.arrowkeyLocation = this.searchAutocompleteResult.length;
-      switch(event.keyCode){
+      }
+
+    } else if (this.searchAutocompleteResult.length > 0) {
+
+      if (this.arrowkeyLocation > this.searchAutocompleteResult.length) this.arrowkeyLocation = 0;
+      if (this.arrowkeyLocation < 0) this.arrowkeyLocation = this.searchAutocompleteResult.length;
+      switch (event.keyCode) {
         case 38:
           this.isListOpen = true;
           this.arrowkeyLocation--;
@@ -303,14 +336,17 @@ export class ToolsComponent implements OnInit {
           break;
         case 40:
           this.isListOpen = true;
+
           this.arrowkeyLocation++;
 
           this.searchQuery = this.searchResultOriginal[this.arrowkeyLocation];
           break;
 
       }
-  
+
     }
+
+
 
   }
 
@@ -323,49 +359,53 @@ export class ToolsComponent implements OnInit {
     document.getElementsByTagName('app-tools')[0].appendChild(node);
   }
 
-  setSearchInput(value: string){
+  setSearchInput(value: string) {
     this.searchQuery = value;
     this.searchAutocompleteResult = [];
   }
-  
+
   delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  buttonClicked(){
+  buttonClicked() {
     let scriptOutputString = this.searchResultTag.nativeElement.value;
-    this.searchAutocompleteResult = scriptOutputString.split(",");
-    
+    if (scriptOutputString.length > 0) {
+      this.searchAutocompleteResult = scriptOutputString.split(",");
+    } else {
+      this.searchAutocompleteResult = [];
+    }
+
     this.beautifySearchResults(this.searchQuery, this.searchAutocompleteResult);
-    if (this.searchAutocompleteResult.length > 0){
-      this.isFilterEnabled  = false;
+    if (this.searchAutocompleteResult.length > 0) {
+      this.isFilterEnabled = false;
     }
   }
-  setCharAt(str: string,index: number,chr: string) {
-    if(index > str.length-1) return str;
-    return str.substring(0,index) + chr + str.substring(index+1);
+  setCharAt(str: string, index: number, chr: string) {
+    if (index > str.length - 1) return str;
+    return str.substring(0, index) + chr + str.substring(index + 1);
   }
 
   boldQuery(str, query): string {
     //str = '<b>'+str+'</b>';
-    
+
     const n = str.toUpperCase();
     const q = query.toUpperCase();
     const x = n.indexOf(q);
     if (!q || x === -1) {
-        return str;
+      return str;
     }
     const l = q.length;
     return str.substr(0, x) + '<b>' + str.substr(x, l) + '</b>' + str.substr(x + l);
   }
-  
-  beautifySearchResults(matchString: string, resultArray: string[]){
+
+  beautifySearchResults(matchString: string, resultArray: string[]) {
     let lenMatchString = matchString.length;
-    
+
     let matchStringArr = matchString.split(" ");
     let index = 0;
 
-    this.searchResultOriginal = [...this.searchAutocompleteResult] ;
+    this.searchResultOriginal = [...this.searchAutocompleteResult];
     resultArray.forEach(result => {
       matchStringArr.forEach(query => {
         result = this.boldQuery(result, query);

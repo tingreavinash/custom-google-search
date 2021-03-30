@@ -3,7 +3,7 @@
 .website-image{
     max-width: 100px;
     max-height: 100px;
-    margin: 1rem;
+    margin: 5px;
 }
 
 .list-group-item{
@@ -11,15 +11,35 @@
     
 }
 
-.list-group{
+.inputSuggestions{
+    position: absolute;
     margin-top: -1px;
+    box-shadow: 0 4px 6px rgb(32 33 36 / 28%);
+    width: 30rem;
+    max-width: -webkit-fill-available;
+    z-index: 9;
+}
+.searchInputGroup{
+    max-width: 30rem;
+    margin: auto;
+    
+}
+
+.halfBorderRadius{
+    border-top-left-radius: 1rem !important;
+    border-top-right-radius: 1rem !important;
+    border-bottom-left-radius: 0rem !important;
+    border-bottom-right-radius: 0rem !important;
 }
 
 #searchInput {
     border-radius: 2rem; 
-    font-weight: bold;
     margin-top: 6rem;
-    color: var(--success);    
+    color: var(--success); 
+       
+}
+#searchInput:hover{
+    box-shadow: 0 4px 6px rgb(32 33 36 / 28%);
 }
 
 
