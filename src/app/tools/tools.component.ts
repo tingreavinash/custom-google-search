@@ -259,15 +259,21 @@ export class ToolsComponent implements OnInit {
   }
 
   
+  arrowkeyLocation = 0;
 
   onKeyUpHandler(event: any){
-    
+
     if(event.key === "Escape"){
       this.isListOpen = false;
       this.isFilterEnabled  = true;
     }else if(event.key === "Enter"){
-      console.log("Enter pressed");
-    }else{
+      if(this.isListOpen){
+        this.isListOpen = false;
+        this.isFilterEnabled = true;  
+      }else{
+        this.executeSearchQuery();
+      }
+    }else if(event.key != "ArrowDown" && event.key != "ArrowUp"){
       this.isListOpen = true;
       let value = (event.target as HTMLSelectElement).value;
       let _url = `https://suggestqueries.google.com/complete/search?client=firefox&callback=myCustomFunction&q=${value}`;
@@ -277,8 +283,6 @@ export class ToolsComponent implements OnInit {
         this.loadAPI = new Promise((resolve) => {
           this.loadScript(_url);
         });
-        
-
         }else{
           this.searchResultTag.nativeElement.value ='';
           this.searchAutocompleteResult =[];
@@ -286,8 +290,27 @@ export class ToolsComponent implements OnInit {
 
         }
       
-    }
+    }else if(this.searchAutocompleteResult.length > 0){
+      
+      if(this.arrowkeyLocation > this.searchAutocompleteResult.length ) this.arrowkeyLocation = 0;
+      if (this.arrowkeyLocation < 0 ) this.arrowkeyLocation = this.searchAutocompleteResult.length;
+      switch(event.keyCode){
+        case 38:
+          this.isListOpen = true;
+          this.arrowkeyLocation--;
 
+          this.searchQuery = this.searchResultOriginal[this.arrowkeyLocation];
+          break;
+        case 40:
+          this.isListOpen = true;
+          this.arrowkeyLocation++;
+
+          this.searchQuery = this.searchResultOriginal[this.arrowkeyLocation];
+          break;
+
+      }
+  
+    }
 
   }
 
