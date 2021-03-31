@@ -269,9 +269,9 @@ export class ToolsComponent implements OnInit {
   this.imageOption = false;
   this.newsOption = false;
   this.filesOption = false;
-
-  this.selectedWebsiteOption = "";
   
+  this.selectedWebsiteOption = "";
+  this.matchFullPhrase = false;
   this.selectedFiletypes = [];
   
   this.selectedImageType = null;
