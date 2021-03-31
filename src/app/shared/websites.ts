@@ -55,11 +55,6 @@ export const WEBSITES: Website[] =[
         name: 'Baeldung',
         url: 'baeldung.com',
         image: '/assets/images/baeldung.png'
-    },
-    {
-        name: 'Other',
-        url: '',
-        image: '/assets/images/other.svg'
     }
 
 ];

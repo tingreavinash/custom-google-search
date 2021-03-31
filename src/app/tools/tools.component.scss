@@ -13,10 +13,11 @@
 
 .inputSuggestions{
     position: absolute;
-    margin-top: -1px;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
     box-shadow: 0 4px 6px rgb(32 33 36 / 28%);
-    width: 30rem;
-    max-width: -webkit-fill-available;
+    width: 20rem;
+    //max-width: -webkit-fill-available;
     z-index: 9;
 }
 .searchInputGroup{
@@ -26,10 +27,10 @@
 }
 
 .halfBorderRadius{
-    border-top-left-radius: 1rem !important;
+    /*border-top-left-radius: 1rem !important;
     border-top-right-radius: 1rem !important;
     border-bottom-left-radius: 0rem !important;
-    border-bottom-right-radius: 0rem !important;
+    border-bottom-right-radius: 0rem !important;*/
 }
 
 #searchInput {
@@ -38,9 +39,7 @@
     color: var(--success); 
        
 }
-#searchInput:hover{
-    box-shadow: 0 4px 6px rgb(32 33 36 / 28%);
-}
+
 
 
 /* enable absolute positioning */

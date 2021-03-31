@@ -215,7 +215,15 @@ export class ToolsComponent implements OnInit {
 
   specificWebsiteService(selectedValue: string) {
     let selectedOption = selectedValue;
-    this.selectedWebsite = this.websiteService.getWebsite(selectedOption);
+    if(selectedOption != 'Other'){
+      this.selectedWebsite = this.websiteService.getWebsite(selectedOption);
+    }else{
+      this.selectedWebsite = {
+        name : 'Other',
+        url : '',
+        image : '/assets/images/other.svg'
+      }
+    }
     this.isOtherOptionSelected();
   }
 
@@ -288,12 +296,13 @@ export class ToolsComponent implements OnInit {
   }
 
 
-  arrowkeyLocation = 0;
+  arrowkeyLocation = -1;
 
   onKeyUpHandler(event: any) {
     this.inputTarget = event.target;
-
-
+    if (event.key === "Backspace"){
+      this.arrowkeyLocation = -1;
+    }
     if (event.key === "Escape") {
       this.isListOpen = false;
       this.isFilterEnabled = true;
@@ -306,7 +315,7 @@ export class ToolsComponent implements OnInit {
         this.executeSearchQuery();
       }
     } else if (event.key != "ArrowDown" && event.key != "ArrowUp") {
-
+      this.arrowkeyLocation = -1;
       this.isListOpen = true;
       let value = (event.target as HTMLSelectElement).value;
       let _url = `https://suggestqueries.google.com/complete/search?client=firefox&callback=myCustomFunction&q=${value}`;
@@ -323,22 +332,24 @@ export class ToolsComponent implements OnInit {
 
       }
 
-    } else if (this.searchAutocompleteResult.length > 0) {
-
-      if (this.arrowkeyLocation > this.searchAutocompleteResult.length) this.arrowkeyLocation = 0;
-      if (this.arrowkeyLocation < 0) this.arrowkeyLocation = this.searchAutocompleteResult.length;
+    } else if (event.keyCode == 38 || event.keyCode == 40) {
+      
+      
       switch (event.keyCode) {
         case 38:
           this.isListOpen = true;
+          
           this.arrowkeyLocation--;
-
+          if (this.arrowkeyLocation > this.searchAutocompleteResult.length-1) this.arrowkeyLocation = 0;
+          if (this.arrowkeyLocation < 0) this.arrowkeyLocation = this.searchAutocompleteResult.length-1;
           this.searchQuery = this.searchResultOriginal[this.arrowkeyLocation];
           break;
         case 40:
           this.isListOpen = true;
 
           this.arrowkeyLocation++;
-
+          if (this.arrowkeyLocation > this.searchAutocompleteResult.length-1) this.arrowkeyLocation = 0;
+          if (this.arrowkeyLocation < 0) this.arrowkeyLocation = this.searchAutocompleteResult.length-1;
           this.searchQuery = this.searchResultOriginal[this.arrowkeyLocation];
           break;
 

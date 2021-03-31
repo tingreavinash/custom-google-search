@@ -18,10 +18,19 @@
         </div>
         <div class="row justify-content-center align-items-center mt-2" *ngIf="siteOption || newsOption || imageOption || filesOption">
             <span>
-                <i class="fas fa-check-circle" style="color: var(--success);"></i> Filter selected
+                <i class="fas fa-check-circle" style="color: var(--success);"></i> Below filter(s) selected
             </span>
             
-
+            
+        </div>
+        <div class="row justify-content-center mt-2">
+            <h5><span class="badge badge-pill badge-dark ml-1 mr-1" *ngIf="siteOption">Website</span></h5>
+            <h5><span class="badge badge-pill badge-dark ml-1 mr-1" *ngIf="imageOption">Images</span></h5>
+            <h5><span class="badge badge-pill badge-dark ml-1 mr-1" *ngIf="filesOption">Files</span></h5>
+            <h5><span class="badge badge-pill badge-dark ml-1 mr-1" *ngIf="newsOption">News</span></h5>
+            <h5><span class="badge badge-pill badge-dark ml-1 mr-1" *ngIf="matchFullPhrase">Match full phrase</span></h5>
+            <h5><span class="badge badge-pill badge-dark ml-1 mr-1" *ngIf="selectedTimeDuration !=''">Time range</span></h5>
+            
         </div>
            
                             
@@ -40,8 +49,9 @@
             aria-describedby="searchInput" name="searchInput"
             placeholder="Enter your search query" [ngClass]="{'halfBorderRadius': isListOpen}" autofocus>
             </div>
+
             <div class="row justify-content-center" *ngIf="isListOpen">
-                <div class="list-group mr-5 ml-5 inputSuggestions"  #resultlistDiv  >
+                <div class="list-group inputSuggestions"  #resultlistDiv  >
                     
                     <a class="list-group-item list-group-item-action list-group-item-light"
                     [class.active]="i == arrowkeyLocation" (click)="setSearchInput(searchResultOriginal[i])" *ngFor="let result of searchAutocompleteResult; let i = index">
@@ -49,20 +59,11 @@
                     </a>
                     
                 </div>
-    
             </div>
 
                 
                 
-            <div class="custom-control custom-checkbox mt-1">
-                
-                <input class="custom-control-input" name="matchFullCheckbox" type="checkbox" id="matchFullCheckbox"
-                    [(ngModel)]="matchFullPhrase">
-                    
-                <label class="custom-control-label" for="matchFullCheckbox">
-                    Match full phrase
-                </label>
-            </div>
+            
            
             
             <div class="row justify-content-center">
@@ -89,10 +90,10 @@
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Select Filters</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Choose Filters</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -245,6 +246,7 @@
                     <div class="input-group-prepend input-group-sm">
                         <select class="form-control " (change)="onSelect($event)">
                             <option selected disabled value="">Select site</option>
+                            <option value="Other">Other</option>
                             <option *ngFor="let website of availableWebsites">
     
                                 {{website.name}}
@@ -282,10 +284,20 @@
                         <option value="y" >Past year</option>
                         
                     </select>
+                    
                 </div>
             </div>
 
             <!-- Time duration-->
+            <div class="custom-control custom-checkbox mt-1">
+                
+                <input class="custom-control-input" name="matchFullCheckbox" type="checkbox" id="matchFullCheckbox"
+                    [(ngModel)]="matchFullPhrase">
+                    
+                <label class="custom-control-label" for="matchFullCheckbox">
+                    Match full phrase
+                </label>
+            </div>
 
             <!-- News option-->
             <div *ngIf="newsOption">
