@@ -314,7 +314,11 @@ export class ToolsComponent implements OnInit {
     } else {
       console.log("Empty..");
       this.isAlertEnabled = true;
-      this.alertMessage = 'There is nothing to search';
+      
+      this.alertMessage = 'You didn\'t type anything';
+      setTimeout(()=>{
+        this.isAlertEnabled = false;
+      }, 5000);
     }
   }
 
