@@ -239,7 +239,8 @@ export class ToolsComponent implements OnInit {
       this.selectedWebsite = {
         displayName : 'Other',
         url : '',
-        image : '/assets/images/other.svg'
+        image : '/assets/images/other.svg',
+        category: 'Other'
       }
     }
     this.isOtherOptionSelected();
