@@ -1,5 +1,5 @@
 <div class="container">
-    <form class="mt-2" autocomplete="off">
+    <form autocomplete="off">
 
         <div *ngIf="isFilterEnabled">
 
@@ -105,7 +105,7 @@
             <div *ngIf="siteOption" class="text-center">
                 <img class="mx-auto d-block website-image" src="{{selectedWebsite.image}}" alt="{{selectedWebsite.displayName}}">
             </div>
-          
+            <form autocomplete="off">
             <!-- Select options-->
             <div class="form-row align-items-center">
                 <div class="col col-sm-3 text-center ">
@@ -264,8 +264,8 @@
                     <input type="text" class="form-control " [(ngModel)]="selectedWebsite.url" [disabled]="isDisabled"
                         id="inlineFormInputGroup" name="inlineFormInputGroup" placeholder="Enter website here">
                 </div>
-                
-        </div>
+            
+            </div>
 
             <!-- Site Option-->
 
@@ -310,7 +310,7 @@
                 <h5 class="text-center"><span class="badge badge-sm badge-info">Note:</span> Only news will be searched.</h5>
             </div>
             <!-- News option-->
-
+            </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-sm btn-secondary" (click)="clearAllFilters()">Clear All</button>
