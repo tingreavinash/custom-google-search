@@ -321,7 +321,9 @@ export class ToolsComponent implements OnInit {
       }, 5000);
     }
   }
-
+  testFun(){
+    console.log("clicked");
+  }
 
   arrowkeyLocation = -1;
 
