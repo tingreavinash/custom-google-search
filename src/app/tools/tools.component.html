@@ -4,7 +4,7 @@
         <div *ngIf="isFilterEnabled">
 
             <div *ngIf="siteOption" class="text-center">
-                <img class="mx-auto d-block website-image" src="{{selectedWebsite.image}}" alt="{{selectedWebsite.name}}">
+                <img class="mx-auto d-block website-image" src="{{selectedWebsite.image}}" alt="{{selectedWebsite.displayName}}">
             </div>
             
         </div>
@@ -101,7 +101,7 @@
         <div class="modal-body">
 
             <div *ngIf="siteOption" class="text-center">
-                <img class="mx-auto d-block website-image" src="{{selectedWebsite.image}}" alt="{{selectedWebsite.name}}">
+                <img class="mx-auto d-block website-image" src="{{selectedWebsite.image}}" alt="{{selectedWebsite.displayName}}">
             </div>
           
             <!-- Select options-->
@@ -175,7 +175,7 @@
                         <option value="" >Any</option>
                         <option *ngFor="let imgType of availableImageTypes">
     
-                            {{imgType.type }}
+                            {{imgType.displayName }}
     
                         </option>
     
@@ -212,7 +212,7 @@
                     <select class="form-control" multiple="multiple" name="fileTypeDropdown" [(ngModel)]="selectedFiletypes" id="fileTypeDropdown">
                         <option *ngFor="let filetype of availableFiletypes">
     
-                            {{filetype.type | uppercase}}
+                            {{filetype.displayName | uppercase}}
     
                         </option>
     
@@ -249,7 +249,7 @@
                             <option value="Other">Other</option>
                             <option *ngFor="let website of availableWebsites">
     
-                                {{website.name}}
+                                {{website.displayName}}
     
                             </option>
     

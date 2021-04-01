@@ -1,3 +1,3 @@
 export class FileType {
-    type: string;
+    displayName: string;
 }

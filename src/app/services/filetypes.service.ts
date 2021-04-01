@@ -14,6 +14,6 @@ export class FiletypesService {
   }
 
   getFileType(filetype: String): FileType {
-    return FILETYPES.filter((item)=> (item.type === filetype))[0];
+    return FILETYPES.filter((item)=> (item.displayName === filetype))[0];
   }
 }

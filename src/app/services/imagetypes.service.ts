@@ -14,6 +14,6 @@ export class ImagetypesService {
   }
 
   getImageType(imageType: String): ImageType {
-    return IMAGETYPES.filter((item)=> (item.type === imageType))[0];
+    return IMAGETYPES.filter((item)=> (item.displayName  === imageType))[0];
   }
 }

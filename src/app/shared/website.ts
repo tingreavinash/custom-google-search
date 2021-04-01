@@ -1,5 +1,5 @@
 export class Website {
-    name: string;
+    displayName: string;
     url: string;
     image: string;
     

@@ -2,84 +2,84 @@ import { FileType } from "./filetype";
 
 export const FILETYPES: FileType[] =[
     {
-        type: 'swf'
+        displayName: 'swf'
     },
     {
-        type: 'pdf'
+        displayName: 'pdf'
     },
     {
-        type: 'ps'
+        displayName: 'ps'
     },
     {
-        type: 'dwf'
+        displayName: 'dwf'
     },
     {
-        type: 'kmz'
+        displayName: 'kmz'
     },
     {
-        type: 'gpx'
+        displayName: 'gpx'
     },
     {
-        type: 'hwp'
+        displayName: 'hwp'
     },
     {
-        type: 'html'
+        displayName: 'html'
     },
     {
-        type: 'htm'
+        displayName: 'htm'
     },
     {
-        type: 'xls'
+        displayName: 'xls'
     },
     {
-        type: 'xlsx'
+        displayName: 'xlsx'
     },
     {
-        type: 'pptx'
+        displayName: 'pptx'
     },
     {
-        type: 'ppt'
+        displayName: 'ppt'
     },
     {
-        type: 'docx'
+        displayName: 'docx'
     },
     {
-        type: 'doc'
+        displayName: 'doc'
     },
     {
-        type: 'odp'
+        displayName: 'odp'
     },
     {
-        type: 'ods'
+        displayName: 'ods'
     },
     {
-        type: 'odt'
+        displayName: 'odt'
     },
     {
-        type: 'rtf'
+        displayName: 'rtf'
     },
     {
-        type: 'svg'
+        displayName: 'svg'
     },
     {
-        type: 'tex'
+        displayName: 'tex'
     },
     {
-        type: 'txt'
+        displayName: 'txt'
     },
     {
-        type: 'text'
+        displayName: 'text'
     },
     {
-        type: 'bas'
+        displayName: 'bas'
     },
     {
-        type: 'cpp'
+        displayName: 'cpp'
     },
     {
-        type: 'java'
+        displayName: 'java'
     },
     {
-        type: 'py'
+        displayName: 'py'
     }
 ];

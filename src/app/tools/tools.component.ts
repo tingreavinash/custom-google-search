@@ -71,11 +71,14 @@ export class ToolsComponent implements OnInit {
     private renderer: Renderer2) {
 
     this.availableWebsites = websiteService.getWebsites();
+    this.availableWebsites.sort(this.compare);
     this.selectedWebsite = new Website();
     this.selectedImageType = new ImageType();
     this.availableFiletypes = fileService.getFileTypes();
+    this.availableFiletypes.sort(this.compare);
 
     this.availableImageTypes = imageService.getImageTypes();
+    this.availableImageTypes.sort(this.compare);
 
     this.renderer.listen('window', 'click', (event: Event) => {
       if (event.target !== this.inputBox.nativeElement &&
@@ -88,6 +91,21 @@ export class ToolsComponent implements OnInit {
     });
 
   }
+
+  compare(a, b) {
+    // Use toUpperCase() to ignore character casing
+    const nameA = a.displayName.toUpperCase();
+    const nameB = b.displayName.toUpperCase();
+  
+    let comparison = 0;
+    if (nameA > nameB) {
+      comparison = 1;
+    } else if (nameA < nameB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+
   enableList() {
     //this.focusSearchBar();
 
@@ -118,7 +136,7 @@ export class ToolsComponent implements OnInit {
 
   isOtherOptionSelected() {
 
-    if (this.selectedWebsite.name === 'Other') {
+    if (this.selectedWebsite.displayName === 'Other') {
 
       this.isDisabled = false;
     } else {
@@ -169,7 +187,7 @@ export class ToolsComponent implements OnInit {
 
       this.appendString("?hl=en&tbm=isch&tbs=");
       if (this.selectedImageType != null) {
-        this.appendString("ift:" + this.selectedImageType.type + ',');
+        this.appendString("ift:" + this.selectedImageType.displayName + ',');
       }
       this.appendString("isz:" + this.selectedImageSize + ',');
       this.appendString("qdr:" + this.selectedTimeDuration);
@@ -219,7 +237,7 @@ export class ToolsComponent implements OnInit {
       this.selectedWebsite = this.websiteService.getWebsite(selectedOption);
     }else{
       this.selectedWebsite = {
-        name : 'Other',
+        displayName : 'Other',
         url : '',
         image : '/assets/images/other.svg'
       }
