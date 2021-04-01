@@ -31,6 +31,8 @@ export class ToolsComponent implements OnInit {
   isFilterEnabled: boolean = true;
   isSpinnerEnabled: boolean = false;
   inputTarget: any;
+  isAlertEnabled: boolean = false;
+  alertMessage: string;
 
   siteOption: boolean;
   imageOption: boolean;
@@ -310,7 +312,9 @@ export class ToolsComponent implements OnInit {
       this.filterCondition = '';
 
     } else {
-      alert("There is nothing to search :(");
+      console.log("Empty..");
+      this.isAlertEnabled = true;
+      this.alertMessage = 'There is nothing to search';
     }
   }
 

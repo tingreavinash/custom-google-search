@@ -1,6 +1,15 @@
 <div class="container">
     <form autocomplete="off">
 
+        <div class="alert alert-warning alert-dismissible fade mt-2"
+         [ngClass]="{'show': isAlertEnabled}"
+         role="alert">
+            <strong>Warning!</strong> {{alertMessage}} <i class="far fa-meh-blank"></i>
+            <button (click)="isAlertEnabled=false;" type="button" class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
         <div *ngIf="isFilterEnabled">
 
             
@@ -69,7 +78,8 @@
            
             
             <div class="row justify-content-center">
-                <button type="button" (click)="executeSearchQuery()" class="btn btn-sm btn-block w-50 btn-outline-success mt-3">
+                <button type="button" (click)="executeSearchQuery()" 
+                class="btn btn-sm btn-block w-50 btn-secondary mt-3">
                     Search
                 </button>
 
